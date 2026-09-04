@@ -117,6 +117,8 @@ pyee==13.0.1
     # via playwright
 pygments==2.21.0
     # via rich
+pypdf==6.17.0
+    # via agentic-healthcare-assistant
 python-dotenv==1.2.3
     # via
     #   pydantic-settings

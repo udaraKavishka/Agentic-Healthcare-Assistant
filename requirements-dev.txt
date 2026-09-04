@@ -145,6 +145,8 @@ pygments==2.21.0
     # via
     #   pytest
     #   rich
+pypdf==6.17.0
+    # via agentic-healthcare-assistant
 pyright==1.1.411
 pytest==9.0.3
     # via

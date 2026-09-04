@@ -3,67 +3,67 @@ url: https://www.nawaloka.com/doctorprofile/D1866
 title: Channel DR PUNSITH GUNAWARDENE - Neuro Surgeon - Nawaloka Hospital PLC - Colombo 02
 ---
 
-Channel DR PUNSITH GUNAWARDENE - Neuro Surgeon - Nawaloka Hospital PLC - Colombo 02 
+Channel DR PUNSITH GUNAWARDENE - Neuro Surgeon - Nawaloka Hospital PLC - Colombo 02
 
-0115 577 111 
+0115 577 111
 
-0115 777 777 
+0115 777 777
 
-nawaloka@slt.lk 
+nawaloka@slt.lk
 
-Emergency Quick Contacts 
+Emergency Quick Contacts
 
-NAWALOKA HOSPITALS PLC 
-Colombo, Sri Lanka 
-Bookings 
+NAWALOKA HOSPITALS PLC
+Colombo, Sri Lanka
+Bookings
 
-Doctor Bookings 
-Find your Doctor 
+Doctor Bookings
+Find your Doctor
 
-Admission Reservation 
-Reserve an Admission 
+Admission Reservation
+Reserve an Admission
 
-Service Bookings 
-Book your service here 
+Service Bookings
+Book your service here
 
-Lab Tests 
-Pay your Lab test here 
-About 
+Lab Tests
+Pay your Lab test here
+About
 
-Our Story Chairman's Message Awards & Recognitions Annual Reports Resident Consultants Centres 
+Our Story Chairman's Message Awards & Recognitions Annual Reports Resident Consultants Centres
 
-Centres of Excellence 
-Heart Centre Neuro Centre Rheumatology & Sports Medicine Ear Nose & Throat Treatment Fertility Centre Radiology & Imaging Mother & Baby Skin Care & Cosmetic Centre Dental Unit Diabetes Centre Elite VIP Centre Elite Corporate Centre Cancer and Blood Disease Vaccination Centre Bone Marrow Transplant Unit Lasik & Advanced Eye Care Centre Services 
+Centres of Excellence
+Heart Centre Neuro Centre Rheumatology & Sports Medicine Ear Nose & Throat Treatment Fertility Centre Radiology & Imaging Mother & Baby Skin Care & Cosmetic Centre Dental Unit Diabetes Centre Elite VIP Centre Elite Corporate Centre Cancer and Blood Disease Vaccination Centre Bone Marrow Transplant Unit Lasik & Advanced Eye Care Centre Services
 
-Clinics 
-Physiotherapy Blood Bank Nutrition & Dietetics Dialysis Care 
+Clinics
+Physiotherapy Blood Bank Nutrition & Dietetics Dialysis Care
 
-Hospital Services 
-Emergency Care Theater Laboratory Health Checks Online Payments International News 
+Hospital Services
+Emergency Care Theater Laboratory Health Checks Online Payments International News
 
-Videos Ongoing Promotions News & Blogs NHREF Learnings Careers Contact 
+Videos Ongoing Promotions News & Blogs NHREF Learnings Careers Contact
 
-NAWALOKA SPECIALIST PROFILE 
+NAWALOKA SPECIALIST PROFILE
 
 ## Meet Our Specialist
 
-Learn more about the specialist's professional background, qualifications, areas of expertise and availability. 
+Learn more about the specialist's professional background, qualifications, areas of expertise and availability.
 
-Specialist Consultant 
+Specialist Consultant
 
 ## DR PUNSITH GUNAWARDENE
 
-Neuro Surgeon Nawaloka Hospitals 
+Neuro Surgeon Nawaloka Hospitals
 
-Hospital 
-Nawaloka Hospitals PLC 
-Colombo, Sri Lanka 
+Hospital
+Nawaloka Hospitals PLC
+Colombo, Sri Lanka
 
-01 
+01
 
 ## Profile
 
-Professional background and areas of expertise 
+Professional background and areas of expertise
 
 Dr. Punsith is a highly experienced brain, spine, and nerve surgeon in Sri Lanka,
 with over 19 years of experience treating both simple and complex neurological
@@ -92,7 +92,7 @@ trauma
 and nerve tumors in hands, legs, and body
 • Migraine & Severe Headaches - Effective treatments for chronic headaches and
 migraines
-• Children’s Brain & Spine Conditions 
+• Children’s Brain & Spine Conditions
 
 Qualifications & Training
 • Medical Degree (MBBS) - University of Colombo
@@ -108,56 +108,56 @@ nerve disorders
 • Known for his compassionate care, clear communication, and patient-first
 approach
 • Part of the expert team at Nawaloka Hospital Colombo - a top AI powered
-private hospital in Sri Lanka for neurosurgery 
+private hospital in Sri Lanka for neurosurgery
 
-02 
+02
 
 ## Professional Qualifications & Memberships
 
-Academic credentials and professional affiliations 
+Academic credentials and professional affiliations
 
 Consultant Brain, Spine & Nerve Surgeon – Nawaloka Hospital Colombo
-MBBS (Colombo), MS (Surgery), Specialist Training (Sri Lanka & UK) 
+MBBS (Colombo), MS (Surgery), Specialist Training (Sri Lanka & UK)
 
-Aa 
-COMMUNICATION 
+Aa
+COMMUNICATION
 
 ## Languages
 
 • English
-• Sinhala 
+• Sinhala
 
-CONSULTATION 
+CONSULTATION
 
 ## Availability
 
-Information not available 
+Information not available
 
-Explore Specialists 
+Explore Specialists
 
 ## Other Neuro Surgeon Specialists
 
-Explore other specialists practicing in the same medical field. 
+Explore other specialists practicing in the same medical field.
 
-DR YOHAN KORALEGE 
-Neuro Surgeon 
+DR YOHAN KORALEGE
+Neuro Surgeon
 
-DR SANJEEWA GARUSINGHE 
-Neuro Surgeon 
+DR SANJEEWA GARUSINGHE
+Neuro Surgeon
 
-DR H.K. DE S. KULARATNE 
-Neuro Surgeon 
+DR H.K. DE S. KULARATNE
+Neuro Surgeon
 
-DR DEEPAL ATTANAYAKE 
-Neuro Surgeon 
+DR DEEPAL ATTANAYAKE
+Neuro Surgeon
 
-DR SURATH MUNASINGHE-VIDEO CONSULTATION 
-Neuro Surgeon 
+DR SURATH MUNASINGHE-VIDEO CONSULTATION
+Neuro Surgeon
 
-Specialist Treatment 
+Specialist Treatment
 
 ## Trusted healthcare at Nawaloka Hospitals
 
-Access specialist medical expertise supported by Nawaloka's comprehensive hospital services. 
+Access specialist medical expertise supported by Nawaloka's comprehensive hospital services.
 
 AI DOC

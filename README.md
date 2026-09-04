@@ -79,4 +79,3 @@ make check            # ruff, ruff format, pyright, pytest
 `requirements.txt` and `requirements-dev.txt` are exported from `uv.lock` by a
 pre-commit hook, so they cannot drift from what is actually installed. Install
 the hooks once with `uv run pre-commit install`.
-

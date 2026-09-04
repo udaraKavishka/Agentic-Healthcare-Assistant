@@ -3,155 +3,155 @@ url: https://www.nawaloka.com/aboutus/consultants
 title: Private Hospitals in Colombo | Nawaloka Hospital Doctor Directory
 ---
 
-Private Hospitals in Colombo | Nawaloka Hospital Doctor Directory 
+Private Hospitals in Colombo | Nawaloka Hospital Doctor Directory
 
-0115 577 111 
+0115 577 111
 
-0115 777 777 
+0115 777 777
 
-nawaloka@slt.lk 
+nawaloka@slt.lk
 
-Emergency Quick Contacts 
+Emergency Quick Contacts
 
-NAWALOKA HOSPITALS PLC 
-Colombo, Sri Lanka 
-Bookings 
+NAWALOKA HOSPITALS PLC
+Colombo, Sri Lanka
+Bookings
 
-Doctor Bookings 
-Find your Doctor 
+Doctor Bookings
+Find your Doctor
 
-Admission Reservation 
-Reserve an Admission 
+Admission Reservation
+Reserve an Admission
 
-Service Bookings 
-Book your service here 
+Service Bookings
+Book your service here
 
-Lab Tests 
-Pay your Lab test here 
-About 
+Lab Tests
+Pay your Lab test here
+About
 
-Our Story Chairman's Message Awards & Recognitions Annual Reports Resident Consultants Centres 
+Our Story Chairman's Message Awards & Recognitions Annual Reports Resident Consultants Centres
 
-Centres of Excellence 
-Heart Centre Neuro Centre Rheumatology & Sports Medicine Ear Nose & Throat Treatment Fertility Centre Radiology & Imaging Mother & Baby Skin Care & Cosmetic Centre Dental Unit Diabetes Centre Elite VIP Centre Elite Corporate Centre Cancer and Blood Disease Vaccination Centre Bone Marrow Transplant Unit Lasik & Advanced Eye Care Centre Services 
+Centres of Excellence
+Heart Centre Neuro Centre Rheumatology & Sports Medicine Ear Nose & Throat Treatment Fertility Centre Radiology & Imaging Mother & Baby Skin Care & Cosmetic Centre Dental Unit Diabetes Centre Elite VIP Centre Elite Corporate Centre Cancer and Blood Disease Vaccination Centre Bone Marrow Transplant Unit Lasik & Advanced Eye Care Centre Services
 
-Clinics 
-Physiotherapy Blood Bank Nutrition & Dietetics Dialysis Care 
+Clinics
+Physiotherapy Blood Bank Nutrition & Dietetics Dialysis Care
 
-Hospital Services 
-Emergency Care Theater Laboratory Health Checks Online Payments International News 
+Hospital Services
+Emergency Care Theater Laboratory Health Checks Online Payments International News
 
-Videos Ongoing Promotions News & Blogs NHREF Learnings Careers Contact 
+Videos Ongoing Promotions News & Blogs NHREF Learnings Careers Contact
 
-Nawaloka Hospitals PLC 
+Nawaloka Hospitals PLC
 
 # Resident Consultants
 
-Meet the distinguished resident consultants at Nawaloka Hospital, delivering specialist-led treatment across advanced medical disciplines with clinical excellence, compassion and trust. 
+Meet the distinguished resident consultants at Nawaloka Hospital, delivering specialist-led treatment across advanced medical disciplines with clinical excellence, compassion and trust.
 
-Specialist Treatment Patient-Centred Treatment Advanced Medical Support 
+Specialist Treatment Patient-Centred Treatment Advanced Medical Support
 
-Trusted Hospital Service 
-Consultant-led services supported by Nawaloka Hospital’s clinical ecosystem. 
+Trusted Hospital Service
+Consultant-led services supported by Nawaloka Hospital’s clinical ecosystem.
 
-Resident Specialists 
-Access a panel of experienced resident consultants across key specialties. 
+Resident Specialists
+Access a panel of experienced resident consultants across key specialties.
 
-Coordinated Clinical Support 
-Resident consultants work with hospital teams to support diagnosis, treatment planning and continuous patient treatment. 
+Coordinated Clinical Support
+Resident consultants work with hospital teams to support diagnosis, treatment planning and continuous patient treatment.
 
-Our Medical Specialists 
+Our Medical Specialists
 
 ## A Distinguished Panel of Resident Consultants
 
-Nawaloka Hospital is home to a distinguished panel of resident consultants in Sri Lanka, covering specialties such as cardiology, neurology, surgery, paediatrics, radiology, gastroenterology, ENT and internal medicine. Our consultants provide evidence-based, patient-centred service supported by advanced medical technology. Specialist doctors in Colombo, Sri Lanka. Book appointments with Nawaloka Hospital consultants. Consultant cardiologist, consultant surgeon, consultant neurologist, consultant paediatrician, consultant radiologist. 
+Nawaloka Hospital is home to a distinguished panel of resident consultants in Sri Lanka, covering specialties such as cardiology, neurology, surgery, paediatrics, radiology, gastroenterology, ENT and internal medicine. Our consultants provide evidence-based, patient-centred service supported by advanced medical technology. Specialist doctors in Colombo, Sri Lanka. Book appointments with Nawaloka Hospital consultants. Consultant cardiologist, consultant surgeon, consultant neurologist, consultant paediatrician, consultant radiologist.
 
-Resident Consultant 
+Resident Consultant
 
 ### Dr. Maiya Gunasekara
 
-General Surgeon / Gastroenterology Laparoscopic Surgeon-Endoscopy, Gastroscopy and Colonoscopy 
+General Surgeon / Gastroenterology Laparoscopic Surgeon-Endoscopy, Gastroscopy and Colonoscopy
 
-View Profile 
+View Profile
 
-Resident Consultant 
+Resident Consultant
 
 ### Dr. Punsith Gunawardena
 
-Consultant Neuro Surgeon 
+Consultant Neuro Surgeon
 
-View Profile 
+View Profile
 
-Resident Consultant 
+Resident Consultant
 
 ### Dr. M.T.D Lakshan
 
-Consultant ENT Surgeon 
+Consultant ENT Surgeon
 
-View Profile 
+View Profile
 
-Resident Consultant 
+Resident Consultant
 
 ### Dr. Riaz Moujood
 
-Consultant Chest Specialist 
+Consultant Chest Specialist
 
-View Profile 
+View Profile
 
-Resident Consultant 
+Resident Consultant
 
 ### Dr. Duminda Pathirana
 
-Consultant Paediatrician 
+Consultant Paediatrician
 
-View Profile 
+View Profile
 
-Resident Consultant 
+Resident Consultant
 
 ### Dr. Prakash Priyadarshan
 
-Consultant Cardiologist 
+Consultant Cardiologist
 
-View Profile 
+View Profile
 
-Resident Consultant 
+Resident Consultant
 
 ### Dr. Usha Samarasinghe
 
-Consultant Radiologist 
+Consultant Radiologist
 
-View Profile 
+View Profile
 
-Resident Consultant 
+Resident Consultant
 
 ### Dr. Sandeep K. Sharma
 
-Consultant Cardiac Anaesthetist and Intensivist 
+Consultant Cardiac Anaesthetist and Intensivist
 
-View Profile 
+View Profile
 
-Resident Consultant 
+Resident Consultant
 
 ### Prof. Arjuna De Silva
 
-Consultant Physician 
+Consultant Physician
 
-View Profile 
+View Profile
 
-Resident Consultant 
+Resident Consultant
 
 ### Dr. Hemant Digambar Waikar
 
-Consultant Cardiac Anaesthetist 
+Consultant Cardiac Anaesthetist
 
-View Profile 
+View Profile
 
-Resident Consultant 
+Resident Consultant
 
 ### Dr. Harindu Wijesinghe
 
-Consultant in Rheumatology, Rehabilitation and Sports Medicine 
+Consultant in Rheumatology, Rehabilitation and Sports Medicine
 
-View Profile 
+View Profile
 
 AI DOC
