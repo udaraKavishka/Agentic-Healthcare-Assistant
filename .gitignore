@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Environment
+.env
+
+# Generated data. The scraped corpus is deliberately not ignored: it is
+# committed so a reviewer never has to re-crawl the hospital's website.
+knowledge/hospital.db
+knowledge/conversations.db
+knowledge/qdrant/

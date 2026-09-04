@@ -1,0 +1,47 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-toml
+      - id: check-yaml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args:
+          # Preserve intentional two-space line breaks in markdown.
+          - --markdown-linebreak-ext=md
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.6
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: pyright
+        name: pyright
+        language: system
+        types: [python]
+        pass_filenames: false
+        entry: uv run pyright
+
+
+      - id: requirements
+        name: export requirements.txt
+        language: system
+        files: ^uv\.lock$
+        pass_filenames: false
+        entry: uv export --no-dev --no-hashes --no-emit-project -o requirements.txt
+
+      - id: requirements-dev
+        name: export requirements-dev.txt
+        language: system
+        files: ^uv\.lock$
+        pass_filenames: false
+        entry: uv export --no-hashes --no-emit-project -o requirements-dev.txt
