@@ -1,13 +1,23 @@
+from pathlib import Path
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+ROOT = Path(__file__).resolve().parent.parent
 
 
 class Settings(BaseSettings):
+    # `extra="ignore"` so a .env carrying keys this service does not read
+    # cannot stop it from starting.
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     PROJECT_NAME: str = "Agentic Healthcare Assistant"
     ENVIRONMENT: str = "local"
+    LOG_LEVEL: str = "INFO"
 
     CORS_ORIGINS: str = "http://localhost:8501"
+
+    SCRAPED_DIR: Path = ROOT / "knowledge" / "scraped"
+    QDRANT_PATH: Path = ROOT / "knowledge" / "qdrant"
 
     @property
     def is_production(self) -> bool:

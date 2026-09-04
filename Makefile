@@ -1,7 +1,13 @@
-.PHONY: install run test lint check
+.PHONY: install scrape index run test lint check
 
 install:
 	uv sync
+
+scrape:
+	uv run python manage.py scrape
+
+index:
+	uv run python manage.py build-index
 
 run:
 	uv run uvicorn assistant.api.app:app --reload --port 8000

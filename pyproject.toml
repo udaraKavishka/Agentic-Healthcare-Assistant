@@ -9,6 +9,12 @@ dependencies = [
     "uvicorn[standard]>=0.38.0",
     "pydantic>=2.13.3",
     "pydantic-settings>=2.14.0",
+    "typer>=0.24.2",
+    "qdrant-client>=1.18.0",
+    "fastembed>=0.8.0",
+    "playwright>=1.58.0",
+    "protego>=0.5.0",
+    "pypdf>=6.1.0",
 ]
 
 [tool.uv]
@@ -32,6 +38,8 @@ line-length = 88
 
 [tool.ruff.lint]
 extend-select = ["I"]
+# Teach ruff that this is a logger, so logging rules apply to it.
+logger-objects = ["assistant.logging.logger"]
 
 [tool.pyright]
 include = ["assistant", "ui"]
