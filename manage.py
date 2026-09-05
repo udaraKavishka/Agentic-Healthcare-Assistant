@@ -1,9 +1,16 @@
 import typer
 
+from assistant.database import seed as database
 from assistant.knowledge_base import index
 from assistant.scrape import fetch
 
 app = typer.Typer(help="Maintenance commands for the healthcare assistant.")
+
+
+@app.command()
+def seed() -> None:
+    """Load data.sql into the hospital database."""
+    database.seed()
 
 
 @app.command()

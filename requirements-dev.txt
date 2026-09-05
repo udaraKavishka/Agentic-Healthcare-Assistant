@@ -176,6 +176,8 @@ rich==15.0.0
 ruff==0.16.6
 shellingham==1.5.4
     # via typer
+sqlglot==30.18.0
+    # via agentic-healthcare-assistant
 starlette==1.6.0
     # via fastapi
 tokenizers==0.23.2

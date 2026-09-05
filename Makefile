@@ -1,7 +1,10 @@
-.PHONY: install scrape index run test lint check
+.PHONY: install seed scrape index run test lint check
 
 install:
 	uv sync
+
+seed:
+	uv run python manage.py seed
 
 scrape:
 	uv run python manage.py scrape

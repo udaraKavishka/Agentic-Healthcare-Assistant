@@ -19,3 +19,7 @@ class APIException(Exception):
             status_code=self.status_code,
             content={"detail": [{"type": self.code, "msg": self.message}]},
         )
+
+
+class UnsafeQueryError(Exception):
+    """A query that will not be sent to the database."""
