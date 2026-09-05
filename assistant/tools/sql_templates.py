@@ -2,6 +2,7 @@ import re
 from typing import Any
 
 from assistant.database.connection import fetch
+from assistant.state import Passage
 
 TITLES = {"dr", "prof", "mr", "mrs", "ms"}
 WORD = re.compile(r"[a-z]+", re.IGNORECASE)
@@ -68,16 +69,23 @@ def get_schedule(doctor_name: str, day: str | None = None) -> list[dict[str, Any
 
 
 def find_lab_tests(query: str) -> list[dict[str, Any]]:
+    columns = (
+        "test_name",
+        "test_code",
+        "category",
+        "preparation_instructions",
+    )
+    where, params = _all_words(query, columns)
+
     return fetch(
-        """
+        f"""
         SELECT test_code, test_name, category, price, fasting_required_hours,
                preparation_instructions, report_delivery_hours
         FROM lab_tests
-        WHERE test_name LIKE :query OR test_code LIKE :query
-              OR category LIKE :query OR preparation_instructions LIKE :query
+        WHERE {where}
         ORDER BY price
         """,
-        {"query": f"%{query}%"},
+        params,
     )
 
 
@@ -88,18 +96,49 @@ def find_health_packages(query: str) -> list[dict[str, Any]]:
     "which package includes a Pap smear?" is answered here with LIKE. It reads
     like an unstructured question but the answer lives in a governed row.
     """
+    columns = (
+        "package_name",
+        "category",
+        "target_audience",
+        "included_tests_and_services",
+    )
+    where, params = _all_words(query, columns)
+
     return fetch(
-        """
+        f"""
         SELECT package_name, category, price, target_audience,
                included_tests_and_services
         FROM health_packages
-        WHERE package_name LIKE :query OR category LIKE :query
-              OR target_audience LIKE :query
-              OR included_tests_and_services LIKE :query
+        WHERE {where}
         ORDER BY price
         """,
-        {"query": f"%{query}%"},
+        params,
     )
+
+
+def _all_words(query: str, columns: tuple[str, ...]) -> tuple[str, dict[str, Any]]:
+    """Require every word, in any of the columns, in any order.
+
+    A single LIKE over the whole phrase matches only contiguous text: "lipid
+    profile" misses "Advanced Lipid & ApoB Profile", which is the row the
+    patient meant.
+    """
+    words = WORD.findall(query)
+
+    if not words:
+        return "1 = 1", {}
+
+    params: dict[str, Any] = {}
+    clauses = []
+
+    for index, word in enumerate(words):
+        key = f"word{index}"
+        params[key] = f"%{word}%"
+        clauses.append(
+            "(" + " OR ".join(f"{column} LIKE :{key}" for column in columns) + ")"
+        )
+
+    return " AND ".join(clauses), params
 
 
 def _name_match(doctor_name: str) -> tuple[str, dict[str, Any]]:
@@ -118,3 +157,17 @@ def _name_match(doctor_name: str) -> tuple[str, dict[str, Any]]:
     clauses = " AND ".join(f"d.name LIKE :{key}" for key in params)
 
     return clauses, params
+
+
+def to_passages(rows: list[dict[str, Any]], citation: str) -> list[Passage]:
+    return [
+        Passage(origin="sql", content=_render(row), citation=citation) for row in rows
+    ]
+
+
+def _render(row: dict[str, Any]) -> str:
+    # Key-value rather than CSV: repeating the column beside each value stops
+    # the model misaligning columns when it reads the rows back.
+    return "\n".join(
+        f"{key}: {value}" for key, value in row.items() if value is not None
+    )

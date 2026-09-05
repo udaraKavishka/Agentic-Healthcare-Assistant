@@ -67,3 +67,19 @@ def test_a_lab_test_is_found_by_its_code():
 
     assert by_code
     assert all(test["test_code"].startswith("LAB") for test in by_code)
+
+
+def test_a_test_is_found_when_its_words_are_not_contiguous():
+    """The row reads "Advanced Lipid & ApoB Profile"; the patient types two words."""
+    tests = find_lab_tests("lipid profile")
+
+    assert len(tests) == 1
+    assert "Lipid" in tests[0]["test_name"]
+
+
+def test_word_order_does_not_matter():
+    assert find_lab_tests("profile lipid") == find_lab_tests("lipid profile")
+
+
+def test_a_phrase_matching_nothing_returns_nothing():
+    assert find_lab_tests("helicopter maintenance") == []

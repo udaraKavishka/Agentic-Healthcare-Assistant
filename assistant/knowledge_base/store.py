@@ -12,6 +12,9 @@ SPARSE = "sparse"
 # Served by fastembed as ONNX, so nothing here pulls in PyTorch.
 DENSE_MODEL = "BAAI/bge-small-en-v1.5"
 SPARSE_MODEL = "Qdrant/bm25"
+# A cross-encoder reads query and passage together, so it ranks better than
+# the bi-encoder that retrieved them. This one is ONNX, like the others.
+RERANK_MODEL = "Xenova/ms-marco-MiniLM-L-6-v2"
 DENSE_SIZE = 384
 
 

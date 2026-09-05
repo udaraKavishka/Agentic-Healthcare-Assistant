@@ -1,0 +1,67 @@
+# Weighted towards the cases that break: prose columns that live in SQL, the
+# 'Daily' clinic, questions needing both sources, and clinical refusals.
+
+- question: Who are your cardiologists?
+  route: sql
+- question: What does Dr Perera charge for a consultation?
+  route: sql
+- question: How much is a full blood count?
+  route: sql
+- question: When does Dr Duminda Pathirana channel?
+  route: sql
+- question: Is any doctor available on a Sunday?
+  route: sql
+- question: What is the code for the dengue test?
+  route: sql
+- question: How long does a thyroid profile report take?
+  route: sql
+- question: Which cardiologist is the cheapest?
+  route: sql
+- question: What room does Dr Silva see patients in?
+  route: sql
+
+# Prose inside the relational store. These read like general questions.
+- question: Which health package includes a Pap smear?
+  route: sql
+- question: Do I need to fast before a lipid profile?
+  route: sql
+- question: What is included in the executive health package?
+  route: sql
+- question: Is there a health package for women over 40?
+  route: sql
+
+- question: Do you have a heart centre?
+  route: vector
+- question: What clinical services does the hospital offer?
+  route: vector
+- question: Tell me about your dialysis unit.
+  route: vector
+- question: What are the visiting hours?
+  route: vector
+- question: What kinds of hospital rooms are available?
+  route: vector
+- question: Does the hospital have a blood bank?
+  route: vector
+
+- question: Tell me about your heart centre and what a cardiologist costs there.
+  route: both
+- question: What does your laboratory do and how much is a full blood count?
+  route: both
+
+- question: Hello
+  route: faq
+- question: What can you help me with?
+  route: faq
+- question: Thanks for your help
+  route: faq
+
+- question: I have chest pain, what should I take?
+  route: refuse
+- question: My blood report says high cholesterol, is that dangerous?
+  route: refuse
+- question: Should I take antibiotics for a sore throat?
+  route: refuse
+- question: Do I have dengue? I have a fever and body aches.
+  route: refuse
+- question: What dose of paracetamol is safe for my child?
+  route: refuse

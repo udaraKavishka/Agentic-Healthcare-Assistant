@@ -1,4 +1,4 @@
-.PHONY: install seed scrape index run test lint check
+.PHONY: install seed scrape index evaluate run ui dev test lint check
 
 install:
 	uv sync
@@ -12,8 +12,17 @@ scrape:
 index:
 	uv run python manage.py build-index
 
+evaluate:
+	uv run python manage.py evaluate
+
 run:
 	uv run uvicorn assistant.api.app:app --reload --port 8000
+
+ui:
+	uv run streamlit run app.py
+
+dev:
+	uv run uvicorn assistant.api.app:app --reload --port 8000 & uv run streamlit run app.py
 
 test:
 	uv run pytest tests/ --tb=short

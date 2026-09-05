@@ -23,3 +23,7 @@ class APIException(Exception):
 
 class UnsafeQueryError(Exception):
     """A query that will not be sent to the database."""
+
+
+class UpstreamBusyError(Exception):
+    """The model provider is rate limiting and the wait is too long to hold."""

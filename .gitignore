@@ -7,8 +7,12 @@ __pycache__/
 .coverage
 htmlcov/
 
-# Environment
+# Environment. .env.example is the template and is committed.
 .env
+.env.*
+!.env.example
+# Streamlit reads secrets from here; config.toml beside it is committed.
+.streamlit/secrets.toml
 
 # Generated data. The scraped corpus is deliberately not ignored: it is
 # committed so a reviewer never has to re-crawl the hospital's website.

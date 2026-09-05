@@ -1,0 +1,15 @@
+# The interface is designed light: the palette below is what the CSS in
+# web/styles.css assumes, so a viewer's dark preference cannot leave dark text on
+# a dark ground.
+[theme]
+base = "light"
+primaryColor = "#0a9999"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f4f8fa"
+textColor = "#0f1720"
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false

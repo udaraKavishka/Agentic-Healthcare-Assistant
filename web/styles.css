@@ -1,0 +1,303 @@
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap');
+
+    html, body, [class*="st-"], [data-testid], button, input, textarea {
+        font-family: 'Outfit', system-ui, -apple-system, sans-serif !important;
+    }
+    /* Streamlit's icons are ligatures in a symbol font: given another family
+       they render as their own name, so "expand_more" appears as text. */
+    [data-testid="stIconMaterial"],
+    span[class*="material-symbols"] {
+        font-family: 'Material Symbols Rounded' !important;
+    }
+
+    :root {
+        --ink: #0f1b2d;
+        --muted: #64748b;
+        --line: #e2e8f0;
+        --blue: #2563eb;
+        --blue-soft: #eef4ff;
+        --blue-deep: #1d4ed8;
+        --panel: #f1f5f9;
+    }
+
+    #MainMenu, footer, header {visibility: hidden;}
+    /* Streamlit fades the previous run's elements while the next one runs.
+       A pinned block would hang over the new answer for that whole moment. */
+    [data-stale="true"] {display: none !important;}
+    .stAppDeployButton {display: none;}
+
+    /* A soft wash behind the top of the page, fading out before the content. */
+    .stApp {
+        background:
+            radial-gradient(46rem 22rem at 50% -6rem, #e8effe 0%, transparent 70%),
+            #ffffff;
+    }
+
+    .block-container {
+        max-width: 44rem;
+        padding-top: 2.6rem;
+        padding-bottom: 4rem;
+    }
+
+    h1, h2, h3 {color: var(--ink);}
+    .stMarkdown a[href^="#"] {display: none;}
+
+    /* Header ----------------------------------------------------------- */
+
+    .brand {display: flex; align-items: center; gap: 0.6rem;}
+    .brand-mark {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 0.6rem;
+        background: var(--logo) center/cover no-repeat;
+    }
+    .brand-kicker {
+        font-size: 0.58rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 700;
+    }
+    .brand-name {
+        font-size: 1.05rem;
+        font-weight: 700;
+        line-height: 1.2;
+        color: var(--ink);
+    }
+
+    /* A quiet text button, not a panel. */
+    .new-chat button {
+        min-height: 0 !important;
+        padding: 0.25rem 0.7rem !important;
+        font-size: 0.76rem !important;
+        border-radius: 999px !important;
+        border: 1px solid var(--line) !important;
+        background: #ffffff !important;
+        color: var(--muted) !important;
+        box-shadow: none !important;
+    }
+    .new-chat button:hover {
+        border-color: var(--blue) !important;
+        color: var(--blue-deep) !important;
+        background: var(--blue-soft) !important;
+    }
+
+    /* Messages --------------------------------------------------------- */
+
+    [data-testid="stChatMessage"] {
+        background: transparent;
+        border: none;
+        padding: 0.15rem 0;
+        gap: 0.55rem;
+    }
+    /* The patient's turn is already marked by the bubble sitting right. */
+    [data-testid="stChatMessageAvatarUser"] {display: none;}
+    [data-testid="stChatMessageAvatarAssistant"] {
+        width: 1.6rem;
+        height: 1.6rem;
+        border: none;
+        border-radius: 50%;
+        background: var(--logo) center/cover no-repeat;
+        flex-shrink: 0;
+    }
+    /* Streamlit draws its own icon inside the avatar. */
+    [data-testid="stChatMessageAvatarAssistant"] > * {display: none;}
+
+    div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .msg-user {
+        margin-left: auto;
+        width: fit-content;
+        max-width: 82%;
+        background: var(--blue);
+        color: #ffffff;
+        padding: 0.6rem 0.95rem;
+        border-radius: 1rem 1rem 0.25rem 1rem;
+        line-height: 1.5;
+        font-size: 0.94rem;
+    }
+
+    /* The sources control, sitting under the answer like a toolbar. */
+    [data-testid="stPopover"] button {
+        min-height: 0 !important;
+        padding: 0.2rem 0.6rem !important;
+        font-size: 0.73rem !important;
+        border-radius: 0.5rem !important;
+        border: 1px solid transparent !important;
+        background: transparent !important;
+        color: var(--muted) !important;
+        box-shadow: none !important;
+    }
+    /* The chevron is a font ligature that does not always resolve, leaving the
+       literal word "expand_more" beside the label. */
+    [data-testid="stPopover"] [data-testid="stIconMaterial"] {display: none;}
+
+    [data-testid="stPopover"] button:hover {
+        background: var(--panel) !important;
+        color: var(--ink) !important;
+    }
+
+    .source-line {
+        font-size: 0.84rem;
+        color: var(--muted);
+        padding: 0.15rem 0;
+    }
+
+    /* Thinking --------------------------------------------------------- */
+
+    .thinking {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        color: var(--muted);
+    }
+    .dots span {
+        display: inline-block;
+        width: 0.32rem;
+        height: 0.32rem;
+        margin-right: 0.15rem;
+        border-radius: 50%;
+        background: var(--blue);
+        animation: bounce 1.2s infinite ease-in-out;
+    }
+    .dots span:nth-child(2) {animation-delay: 0.15s;}
+    .dots span:nth-child(3) {animation-delay: 0.3s;}
+    @keyframes bounce {
+        0%, 60%, 100% {opacity: 0.25; transform: translateY(0);}
+        30% {opacity: 1; transform: translateY(-0.17rem);}
+    }
+
+    /* Landing ---------------------------------------------------------- */
+
+    .greeting {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 1.6rem 0 0.4rem;
+    }
+    .greeting-avatar {
+        width: 1.9rem;
+        height: 1.9rem;
+        border-radius: 50%;
+        background: var(--logo) center/cover no-repeat;
+        flex-shrink: 0;
+    }
+    .greeting-text {
+        font-size: 1.02rem;
+        color: var(--ink);
+        line-height: 1.5;
+    }
+
+    /* The prompt block is pinned just above the chat bar. Streamlit nests every
+       element in its own wrapper, so a flow layout cannot reliably put it
+       there; the container holding the marker is positioned instead. */
+    div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] .dock) {
+        position: fixed;
+        bottom: 10.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(44rem, 92vw);
+        z-index: 5;
+        background: #ffffff;
+    }
+    /* Too short to hold both the greeting and the prompts. */
+    @media (max-height: 520px) {
+        div[data-testid="stVerticalBlock"]:has(
+            > div[data-testid="stElementContainer"] .dock
+        ) {display: none;}
+    }
+
+    .invite {
+        text-align: center;
+        font-size: 1.28rem;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 0.9rem;
+    }
+
+    .stButton button {
+        border-radius: 0.7rem;
+        border: 1px solid transparent;
+        background: var(--panel);
+        color: var(--ink);
+        font-size: 0.86rem;
+        font-weight: 500;
+        text-align: left;
+        padding: 0.7rem 0.9rem;
+        line-height: 1.45;
+        height: auto;
+        min-height: 0;
+        box-shadow: none;
+    }
+    .stButton button:hover {
+        background: var(--blue-soft);
+        border-color: #c7dbff;
+        color: var(--blue-deep);
+    }
+    /* Streamlit clamps a button label to one line and adds an ellipsis. These
+       are questions, so they wrap instead. */
+    .stButton button div,
+    .stButton button p,
+    .stButton button [data-testid="stMarkdownContainer"] {
+        text-align: left !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        -webkit-line-clamp: unset !important;
+        display: block !important;
+        max-width: 100% !important;
+    }
+
+    /* Pinned under the input rather than left at the end of the page, so the
+       warning is in view whatever the conversation is doing. */
+    .disclaimer {
+        position: fixed;
+        bottom: 1.1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(44rem, 92vw);
+        text-align: center;
+        color: #94a3b8;
+        font-size: 0.75rem;
+        /* Above the bottom container Streamlit paints behind the input. */
+        z-index: 1000;
+    }
+
+    div[data-testid="stChatInput"] {
+        border-radius: 0.9rem;
+        border: 1px solid var(--line);
+        background: var(--panel);
+    }
+
+    /* Narrow screens ---------------------------------------------------- */
+
+    @media (max-width: 640px) {
+        .block-container {
+            padding-top: 1.4rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        /* Three prompts stack into a column here, which is taller than the
+           space above the input, so they return to the flow and scroll. */
+        div[data-testid="stVerticalBlock"]:has(
+            > div[data-testid="stElementContainer"] .dock
+        ) {
+            position: static;
+            transform: none;
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+
+        .invite {font-size: 1.1rem; margin-bottom: 0.7rem;}
+        .greeting {padding: 1rem 0 0.2rem;}
+        .greeting-text {font-size: 0.95rem;}
+        .brand-name {font-size: 0.98rem;}
+        .msg-user {max-width: 90%;}
+        .stButton button {min-height: 0; padding: 0.6rem 0.8rem;}
+        .disclaimer {font-size: 0.7rem; bottom: 0.75rem;}
+    }
