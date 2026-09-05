@@ -1,4 +1,5 @@
 import re
+import time
 import uuid
 from dataclasses import dataclass, field
 from urllib.parse import urlparse
@@ -7,10 +8,20 @@ import httpx
 import streamlit as st
 from streamlit.delta_generator import DeltaGenerator
 
+from assistant.logging import logger
 from web.client import Event, ask
 from web.styles import LOGO, css, skeleton
 
 API_URL = "http://localhost:8000"
+# Typing pace: characters per frame, and how far the model may run ahead
+# before the rest is shown at once.
+STRIDE = 4
+FRAME = 0.012
+BACKLOG = 240
+UNREACHABLE = (
+    "I couldn't complete that just now. Please try again in a moment, or call"
+    " Nawaloka Hospitals on 0115 577 111."
+)
 PLACEHOLDER = "Ask about doctors, tests, packages or the hospital"
 # The model reaches for a dash as a separator whatever the prompt says, so
 # the one it writes is turned into the colon it means.
@@ -41,11 +52,17 @@ class Message:
 
 @dataclass
 class Turn:
-    """What the stream has produced so far, gathered in one place."""
+    """What the stream has produced so far, gathered in one place.
+
+    `pending` is what has arrived but not yet been shown, which is what lets
+    the reply appear at a readable pace rather than in the model's bursts.
+    """
 
     route: str = ""
     spoken: list[str] = field(default_factory=list)
     sources: list[str] = field(default_factory=list)
+    pending: str = ""
+    failed: bool = False
 
     @property
     def answer(self) -> str:
@@ -177,42 +194,55 @@ def _replay() -> None:
 
 
 def _answer(question: str) -> Message:
-    """Stream one answer, showing progress until the first token arrives."""
+    """Stream one answer: what it is doing on one line, the reply filling below.
+
+    Two placeholders rather than one. Sharing a single slot meant the first
+    token wiped the line that said where the answer was being looked for, so
+    the work the assistant did disappeared exactly when it paid off.
+    """
+    status = st.empty()
     body = st.empty()
     turn = Turn()
 
-    body.markdown(_thinking("Reading your question"), unsafe_allow_html=True)
+    status.markdown(_thinking("Reading your question"), unsafe_allow_html=True)
 
     try:
         for event in ask(API_URL, st.session_state.conversation_id, question):
-            _apply(event, body, turn)
+            _apply(event, status, body, turn)
     except httpx.HTTPError as error:
-        message = f"I could not reach the assistant. Is the API running? ({error})"
-        body.markdown(message)
-        return Message(role="assistant", content=message)
+        # The transport detail belongs in the log, not in front of a patient.
+        logger.warning("The assistant is unreachable: %s", error)
+        status.empty()
+        body.markdown(UNREACHABLE)
 
+        return Message(role="assistant", content=UNREACHABLE)
+
+    status.empty()
     body.markdown(_prose(turn.answer))
-    _sources(turn.sources, turn.route)
 
-    return Message(
-        role="assistant",
-        content=turn.answer,
-        route=turn.route,
-        sources=turn.sources,
-    )
+    # A turn that failed cites nothing: the pages were fetched, but nothing was
+    # said from them, and a citation under an apology credits a source for an
+    # answer it never gave.
+    sources = [] if turn.failed else turn.sources
+    route = "" if turn.failed else turn.route
+    _sources(sources, route)
+
+    return Message(role="assistant", content=turn.answer, route=route, sources=sources)
 
 
-def _apply(event: Event, body: DeltaGenerator, turn: Turn) -> None:
+def _apply(
+    event: Event, status: DeltaGenerator, body: DeltaGenerator, turn: Turn
+) -> None:
     if event.kind == "route":
         turn.route = event.value
-        body.markdown(
+        status.markdown(
             _thinking(f"Looking in the {ROUTE_LABELS.get(event.value, '').lower()}"),
             unsafe_allow_html=True,
         )
         return
 
     if event.kind == "tool":
-        body.markdown(_thinking(event.detail or event.value), unsafe_allow_html=True)
+        status.markdown(_thinking(event.detail or event.value), unsafe_allow_html=True)
         return
 
     if event.kind == "source":
@@ -220,8 +250,28 @@ def _apply(event: Event, body: DeltaGenerator, turn: Turn) -> None:
         return
 
     if event.kind in {"token", "error"}:
-        turn.spoken.append(event.value)
+        turn.failed = turn.failed or event.kind == "error"
+        turn.pending += event.value
+        _type(body, turn)
+
+
+def _type(body: DeltaGenerator, turn: Turn) -> None:
+    """Reveal what has arrived a few characters at a time.
+
+    The model answers in bursts, so rendering each chunk whole lands a reply in
+    two or three jumps. Draining the buffer at a fixed rate reads as typing.
+    The backlog rule is what keeps that honest: once the model is further ahead
+    than a reader would notice, the rest is shown at once rather than pacing a
+    long answer to the slowest few characters.
+    """
+    while turn.pending:
+        step = STRIDE if len(turn.pending) <= BACKLOG else len(turn.pending)
+        turn.spoken.append(turn.pending[:step])
+        turn.pending = turn.pending[step:]
         body.markdown(_prose(turn.answer))
+
+        if turn.pending:
+            time.sleep(FRAME)
 
 
 def _said(question: str) -> None:

@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 
 from assistant.config import settings
 from assistant.logging import logger
+from assistant.prompts import prompt
 
 WINDOW_SECONDS = 60.0
 
@@ -26,7 +27,8 @@ class Budget:
             wait = self._wait_for(tokens)
 
             if wait > settings.MAX_LIMIT_WAIT_SECONDS:
-                raise TimeoutError(f"The rate limit needs {wait:.0f}s of headroom.")
+                logger.info("Shedding a turn: %.0fs of headroom needed", wait)
+                raise TimeoutError(prompt("busy", wait=f"Give me {wait:.0f} seconds"))
 
             if wait > 0:
                 logger.info("Rate limit reached, waiting %.1fs", wait)
@@ -47,10 +49,12 @@ class Budget:
             return 0.0
 
         if not self._spent:
-            raise TimeoutError(
-                f"{tokens} tokens is more than the {self.tokens_per_minute}"
-                " allowed in a minute."
+            logger.warning(
+                "A single call asked for %s tokens against a %s limit",
+                tokens,
+                self.tokens_per_minute,
             )
+            raise TimeoutError(prompt("failed"))
 
         oldest, _ = self._spent[0]
         return max(0.0, WINDOW_SECONDS - (time.monotonic() - oldest))

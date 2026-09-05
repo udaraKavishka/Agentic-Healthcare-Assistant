@@ -34,7 +34,7 @@ async def test_an_unexpected_failure_is_answered_not_dropped(
 
     assert kinds[-1] == "done"
     assert "error" in kinds
-    assert recorded and recorded[0][1].startswith("Something went wrong")
+    assert recorded and recorded[0][1].startswith("I couldn't complete that")
 
 
 async def test_a_shed_turn_says_the_assistant_is_busy(monkeypatch: pytest.MonkeyPatch):

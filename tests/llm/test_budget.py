@@ -57,5 +57,5 @@ async def test_a_request_larger_than_the_minute_is_refused_not_crashed():
     """
     budget = Budget(requests_per_minute=30, tokens_per_minute=100)
 
-    with pytest.raises(TimeoutError, match="more than the 100"):
+    with pytest.raises(TimeoutError, match="couldn't complete that"):
         await budget.reserve(500)

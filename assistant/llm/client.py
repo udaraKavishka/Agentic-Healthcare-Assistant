@@ -8,6 +8,7 @@ from assistant.config import settings
 from assistant.exceptions import UpstreamBusyError
 from assistant.llm.budget import budget, estimate_tokens
 from assistant.logging import logger
+from assistant.prompts import prompt
 
 # gpt-oss models spend completion tokens on reasoning before answering, so a
 # cap that only covers the answer leaves nothing to say it with.
@@ -22,6 +23,13 @@ def _client() -> AsyncGroq:
 async def complete(
     messages: list[dict[str, str]], model: str, max_output: int = 1024
 ) -> str:
+    """Ask for one JSON object back.
+
+    JSON mode is not only about parsing. Offered no tools, `gpt-oss` sometimes
+    answers by calling one anyway, and the provider rejects the whole request
+    with `tool_use_failed` rather than returning the text. Constraining the
+    reply to an object stops it reaching for a tool that was never there.
+    """
     await _reserve(messages, max_output)
 
     try:
@@ -30,11 +38,27 @@ async def complete(
             messages=messages,  # pyright: ignore[reportArgumentType]
             max_completion_tokens=max_output,
             reasoning_effort=REASONING_EFFORT,
+            response_format={"type": "json_object"},
         )
     except RateLimitError as error:
         raise UpstreamBusyError(_busy_message(error)) from error
+    except BadRequestError as error:
+        return _rejected_content(error)
 
     return response.choices[0].message.content or ""
+
+
+def _rejected_content(error: BadRequestError) -> str:
+    """Recover the reply the provider refused to return.
+
+    A `tool_use_failed` body carries the text it rejected under
+    `failed_generation`. Salvaging it turns a dead turn into a routed one.
+    """
+    logger.warning("The model produced an unusable reply: %s", error)
+    body = error.body if isinstance(error.body, dict) else {}
+    failed = body.get("error", {})
+
+    return failed.get("failed_generation", "") if isinstance(failed, dict) else ""
 
 
 async def choose_tools(
@@ -98,10 +122,13 @@ async def _reserve(messages: list[dict[str, str]], max_output: int) -> None:
 
 
 def _busy_message(error: APIStatusError) -> str:
+    """A wait, described as load rather than as a rate limit.
+
+    "Rate limit" is a fact about our billing tier, not about the patient's
+    question, and the number of seconds is the only part they can act on.
+    """
     retry_after = error.response.headers.get("retry-after", "")
     logger.warning("Upstream rate limited, retry-after %ss", retry_after or "unknown")
+    wait = f"Give me {retry_after} seconds" if retry_after else "Give me a few seconds"
 
-    if retry_after:
-        return f"The assistant is busy. Try again in {retry_after} seconds."
-
-    return "The assistant is busy. Try again shortly."
+    return prompt("busy", wait=wait)

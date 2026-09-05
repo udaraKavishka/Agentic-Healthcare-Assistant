@@ -1,4 +1,4 @@
-from web.app import Turn, _label, _prose
+from web.app import BACKLOG, Turn, _label, _prose, _type
 
 
 def test_a_separator_dash_becomes_the_colon_it_means():
@@ -36,3 +36,33 @@ def test_a_turn_joins_the_tokens_it_collected():
 
 def test_a_fresh_turn_has_no_answer():
     assert Turn().answer == ""
+
+
+def test_typing_reveals_a_burst_a_few_characters_at_a_time():
+    """A whole chunk rendered at once lands the reply in jumps, not as typing."""
+    turn = Turn(pending="Heart Centre")
+    frames: list[str] = []
+    _type(_Recorder(frames), turn)
+
+    assert turn.answer == "Heart Centre"
+    assert len(frames) > 1
+    assert frames[0] == "Hear"
+
+
+def test_a_model_far_ahead_is_shown_at_once():
+    """Past the backlog, pacing the reader would only make them wait."""
+    turn = Turn(pending="x" * (BACKLOG + 50))
+    frames: list[str] = []
+    _type(_Recorder(frames), turn)
+
+    assert frames == ["x" * (BACKLOG + 50)]
+
+
+class _Recorder:
+    """Stands in for the Streamlit placeholder, keeping every frame drawn."""
+
+    def __init__(self, frames: list[str]) -> None:
+        self._frames = frames
+
+    def markdown(self, text: str) -> None:
+        self._frames.append(text)
