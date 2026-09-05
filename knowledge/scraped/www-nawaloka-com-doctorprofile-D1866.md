@@ -139,19 +139,19 @@ Explore Specialists
 
 Explore other specialists practicing in the same medical field.
 
-DR YOHAN KORALEGE
-Neuro Surgeon
-
-DR SANJEEWA GARUSINGHE
-Neuro Surgeon
-
-DR H.K. DE S. KULARATNE
-Neuro Surgeon
-
 DR DEEPAL ATTANAYAKE
 Neuro Surgeon
 
+DR COLVIN SAMARASINGHE
+Neuro Surgeon
+
+DR NIRUKSHAN JAYAWEERA
+Neuro Surgeon
+
 DR SURATH MUNASINGHE-VIDEO CONSULTATION
+Neuro Surgeon
+
+DR SANJEEWA GARUSINGHE
 Neuro Surgeon
 
 Specialist Treatment

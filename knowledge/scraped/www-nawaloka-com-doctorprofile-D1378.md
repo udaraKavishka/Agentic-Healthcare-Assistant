@@ -124,19 +124,19 @@ Explore Specialists
 
 Explore other specialists practicing in the same medical field.
 
-DR NIHAL K.A GUNATHILAKA
+DR MONIKA DE SILVA-AUDIO CONSULTATION
+Rheumatologist
+
+DR GUNENDRIKA KASTHURIRATHNE
 Rheumatologist
 
 DR HARINDU WIJESINGHE-AUDIO CONSULTATION
 Rheumatologist
 
-PROF INOSHI ATUKORALA
+DR KALEEL CASSIM
 Rheumatologist
 
 DR J.V. ARIYASINGHE
-Rheumatologist
-
-DR KALEEL CASSIM
 Rheumatologist
 
 Specialist Treatment

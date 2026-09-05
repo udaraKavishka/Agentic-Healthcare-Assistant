@@ -47,16 +47,16 @@ Since 1985
 
 A legacy of excellence and a commitment to quality, innovation, compassionate service, governance, sustainability and workplace excellence.
 
-37+
+54+
 Awards & Recognitions
 
-14
+21
 Years of Excellence
 
-9
+14
 Latest Recognitions
 
-735
+1075
 Legacy Since
 
 Sri Lanka’s Most Awarded Hospital

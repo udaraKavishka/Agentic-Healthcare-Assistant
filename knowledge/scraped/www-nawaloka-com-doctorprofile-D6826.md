@@ -130,19 +130,19 @@ Explore Specialists
 
 Explore other specialists practicing in the same medical field.
 
-DR J.H.LAKSHMAN COORAY
-Chest Specialist
-
 DR RUWANTHI JAYASEKARA
-Chest Specialist
-
-DR RIAZ MOWJOOD-AUDIO CONSULTATION
 Chest Specialist
 
 DR AMITHA FERNANDO
 Chest Specialist
 
-DR ASHA SAMARANAYAKE
+DR RIAZ MOWJOOD-AUDIO CONSULTATION
+Chest Specialist
+
+DR AFLAH SADIKEEN
+Chest Specialist
+
+DR KIRTHI GUNASEKARA
 Chest Specialist
 
 Specialist Treatment

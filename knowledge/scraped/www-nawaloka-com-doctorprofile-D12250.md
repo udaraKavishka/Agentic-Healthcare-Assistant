@@ -125,19 +125,19 @@ Explore Specialists
 
 Explore other specialists practicing in the same medical field.
 
-DR PAVITHRA RUBASINGHE
+DR A.D.P. ATHUKORALA
 Radiologists
 
-DR CHINTHAKA APPUHAMY
+DR B.N. ABEYWICKRAMA
 Radiologists
 
-DR PANDULA HETTIARACHCHI
+DR PRASAD DE SILVA
 Radiologists
 
 DR D.J WICKRAMARATNA
 Radiologists
 
-DR(MRS) A.N.I. WIJESINGHE
+DR INDRA LEKAMGE
 Radiologists
 
 Specialist Treatment

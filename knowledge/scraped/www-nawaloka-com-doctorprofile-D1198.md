@@ -130,19 +130,19 @@ Explore Specialists
 
 Explore other specialists practicing in the same medical field.
 
+DR W RATNAYAKE
+Ent Surgeon
+
+DR V. JEEVATHAS
+Ent Surgeon
+
 DR BIMANTHA PERERA
 Ent Surgeon
 
-DR M. SHERIFF-AUDIO CONSULTATION
+DR R.P DAYASENA
 Ent Surgeon
 
-DR AKRAM DRAHAMAN
-Ent Surgeon
-
-DR A.D.K.S.N. YASAWARDENA
-Ent Surgeon
-
-DR A.B.M MILHAN-VIDEO CONSULTATION
+DR A.B.M MILHAN
 Ent Surgeon
 
 Specialist Treatment

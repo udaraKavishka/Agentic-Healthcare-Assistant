@@ -130,19 +130,19 @@ Explore Specialists
 
 Explore other specialists practicing in the same medical field.
 
-DR M.RAYNO NAVINAN
+DR SOLITH SENANAYAKE
 Cardiologist
 
-DR S.R DE SILVA
+DR H.D SAMARASINGHE
 Cardiologist
 
-DR MOHAN RAJAKARUNA
+DR RASIKA SOVIS
 Cardiologist
 
-DR S MITHRAKUMAR
+DR CHANDRIKE PONNAMPERUMA
 Cardiologist
 
-DR MADURA DE ALWIS
+DR RUWAN EKANAYAKE-AUDIO CONSULTATION
 Cardiologist
 
 Specialist Treatment

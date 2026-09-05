@@ -129,19 +129,19 @@ Explore Specialists
 
 Explore other specialists practicing in the same medical field.
 
-DR SAHAN MENDIS
+DR CHINTAKA DE SILVA
 Physician
 
-DR MANITHA PERERA
+DR(MRS) KAYATHRI PERIASAMY
+Physician
+
+DR(MRS) F.G. SIVAGNANAM
+Physician
+
+DR(MRS) KAYATHRI PERIASAMY-AUDIO CONSULTATION
 Physician
 
 DR RUWAN C PARAKRAMAWANSHA
-Physician
-
-DR P.D. PRASAD SIRIWARDANA
-Physician
-
-DR SURANGA MANILGAMA
 Physician
 
 Specialist Treatment

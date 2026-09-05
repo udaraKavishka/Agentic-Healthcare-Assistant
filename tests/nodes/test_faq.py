@@ -1,5 +1,7 @@
 import pytest
+import yaml
 
+from assistant.config import settings
 from assistant.nodes.faq import Entry, lookup
 
 FAQ_QUESTIONS = [
@@ -23,6 +25,17 @@ HOSPITAL_QUESTIONS = [
     "Which package includes a Pap smear?",
     "I have chest pain, what should I take?",
 ]
+
+
+def test_the_curated_faq_ships_with_the_repository():
+    """Without the file every lookup returns None and the fast path is silently
+    off, so this fails once and by name rather than in every match test."""
+    assert settings.FAQ_PATH.exists(), f"no FAQ at {settings.FAQ_PATH}"
+
+    entries = yaml.safe_load(settings.FAQ_PATH.read_text())
+
+    assert entries, "the FAQ is empty"
+    assert all({"question", "answer"} <= set(entry) for entry in entries)
 
 
 @pytest.mark.parametrize("question", FAQ_QUESTIONS)

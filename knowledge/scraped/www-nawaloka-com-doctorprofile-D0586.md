@@ -128,19 +128,19 @@ Explore Specialists
 
 Explore other specialists practicing in the same medical field.
 
-PROF SANATH.P LAMABADUSURIYA
+DR RUKMAL GUNATILAKA
 Paediatrician
 
-DR KALA SOMASUNDARAM
+DR DUMINDA PATHIRANA-VIDEO CONSULTATION
 Paediatrician
 
-DR BUDDHIMA JAYASINGHE
+DR UDAYA KUMARASINGHE
 Paediatrician
 
-DR SRILAL DE SILVA
+DR R.M. SURANTHA PERERA
 Paediatrician
 
-DR M.IFLAL ZUBAIR-AUDIO CONSULTATION
+DR SAMANTHA C JAYAWARDANA
 Paediatrician
 
 Specialist Treatment

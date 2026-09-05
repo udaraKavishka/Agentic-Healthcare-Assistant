@@ -1,0 +1,68 @@
+# Answers to the questions patients ask most, matched before the router runs and
+# returned with no model call at all. Every fact here appears in the scraped
+# corpus: the hotline, the second line, the email and the city all come from the
+# hospital's own contact page.
+#
+# Keep these to what does not change and what the assistant knows about itself.
+# Anything about a doctor, a price, a schedule or a package belongs in the
+# database, where it stays correct.
+
+- question: Hello
+  asked_as: ["hi", "hey", "good morning", "good afternoon", "hi there", "hello there"]
+  answer: |
+    Hello. I can help you with doctors and their consultation fees, channeling
+    days and times, lab test prices and preparation, and what the hospital's
+    health packages include. What would you like to know?
+
+- question: Hi, are you there?
+  asked_as: ["are you there", "hello?", "anyone there", "is this working"]
+  answer: |
+    Yes, I'm here. Ask me about doctors and their fees, channeling times, lab
+    tests, health packages, or the hospital's services and centres.
+
+- question: What can you help me with?
+  asked_as: ["what can you do", "what do you do", "how can you help", "what are you for", "help"]
+  answer: |
+    I answer from Nawaloka's own records:
+
+    - doctors, their specialities and consultation fees
+    - channeling days, times and room numbers
+    - lab test prices, fasting requirements and how long reports take
+    - what each health package includes and who it is for
+    - the hospital's services, clinical centres, rooms and facilities
+
+    I can't give medical advice or interpret symptoms and results.
+
+- question: Thank you for your help
+  asked_as: ["thanks", "thank you", "thanks a lot", "cheers", "ok thanks"]
+  answer: |
+    You're welcome. If you need anything else about doctors, tests, packages or
+    the hospital, just ask.
+
+- question: How do I contact the hospital?
+  asked_as: ["contact number", "phone number", "how do I contact you", "what is your hotline", "email address"]
+  answer: |
+    You can reach Nawaloka Hospitals on **0115 577 111** or **0115 777 777**, or
+    by email at **nawaloka@slt.lk**. The hospital is in Colombo, Sri Lanka.
+
+- question: How do I book or channel a doctor?
+  asked_as: ["how do I channel a doctor", "how do I book an appointment", "how do I make a booking"]
+  answer: |
+    Call **0115 577 111** to channel a consultant. Tell me the speciality or the
+    doctor's name and I'll find their consultation fee and the days and times
+    they channel first.
+
+- question: Are you a doctor, can you give me medical advice?
+  asked_as: ["are you a doctor", "can you give medical advice", "are you a real person", "can you diagnose me"]
+  answer: |
+    No. I can't give medical advice, interpret symptoms or test results, or
+    suggest medication. Please speak to a doctor. You can channel a consultant
+    at Nawaloka Hospitals on **0115 577 111**, and I'm happy to help you find
+    the right speciality.
+
+- question: What languages do you speak?
+  asked_as: ["do you speak sinhala", "can I write in sinhala", "what languages do you understand"]
+  answer: |
+    I read English, Sinhala and Singlish, and I answer in English so that
+    doctor names, test names and prices stay exactly as the hospital records
+    them.
