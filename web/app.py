@@ -24,12 +24,10 @@ ROUTE_LABELS = {
     "refuse": "Referred to a doctor",
 }
 
-# Shown once, on the empty conversation. A patient mid-conversation has their
-# own next question.
 OPENERS = [
-    "Who are your cardiologists and what do they charge?",
-    "Which health package includes a Pap smear?",
-    "Do you have a heart centre and what does it treat?",
+    "What doctors are available and what do they charge?",
+    "What health checkup packages do you offer?",
+    "What services does the hospital provide?",
 ]
 
 
@@ -73,8 +71,8 @@ def main() -> None:
     # down there rather than in the page.
     asked = st.chat_input(PLACEHOLDER)
     st.markdown(
-        '<div class="disclaimer">Information provided is not medical advice.'
-        " Please consult a doctor.</div>",
+        '<div class="disclaimer">AI responses may contain mistakes. This is'
+        " information only, not medical advice.</div>",
         unsafe_allow_html=True,
     )
 

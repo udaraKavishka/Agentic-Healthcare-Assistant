@@ -1,7 +1,7 @@
 from collections.abc import AsyncIterator
 from functools import lru_cache
 
-from groq import APIStatusError, AsyncGroq, RateLimitError
+from groq import APIStatusError, AsyncGroq, BadRequestError, RateLimitError
 
 from assistant.config import settings
 from assistant.exceptions import UpstreamBusyError
@@ -55,6 +55,9 @@ async def choose_tools(
         )
     except RateLimitError as error:
         raise UpstreamBusyError(_busy_message(error)) from error
+    except BadRequestError as error:
+        logger.warning("The model proposed an unusable tool call: %s", error)
+        return []
 
     return response.choices[0].message.tool_calls or []
 

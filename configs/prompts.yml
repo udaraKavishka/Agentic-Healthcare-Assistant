@@ -112,3 +112,11 @@ faq: |
   times, lab test prices and preparation, what health packages include, and the
   hospital's services, centres and facilities. You cannot give medical advice.
   Do not invent any other capability.
+
+no_evidence: |
+  I don't have that in my sources. Please call Nawaloka Hospitals on
+  0115 577 111 and they can help.
+
+nothing_said: |
+  Sorry, I did not catch that. Could you put it another way? I can help with
+  doctors and fees, channeling times, lab tests and health packages.

@@ -83,3 +83,18 @@ def test_word_order_does_not_matter():
 
 def test_a_phrase_matching_nothing_returns_nothing():
     assert find_lab_tests("helicopter maintenance") == []
+
+
+def test_an_omitted_query_lists_everything():
+    """A catalogue question reaches the tool with no query at all.
+
+    The tool description tells the model to omit it, so the template never has
+    to guess which words of a sentence were meant to filter.
+    """
+    assert len(find_health_packages()) == 11
+    assert len(find_lab_tests()) == 17
+
+
+def test_a_specific_term_still_narrows():
+    assert len(find_health_packages("Pap smear")) == 3
+    assert len(find_lab_tests("dengue")) == 1

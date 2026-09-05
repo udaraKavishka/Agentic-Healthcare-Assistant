@@ -68,7 +68,7 @@ def get_schedule(doctor_name: str, day: str | None = None) -> list[dict[str, Any
     )
 
 
-def find_lab_tests(query: str) -> list[dict[str, Any]]:
+def find_lab_tests(query: str = "") -> list[dict[str, Any]]:
     columns = (
         "test_name",
         "test_code",
@@ -89,7 +89,7 @@ def find_lab_tests(query: str) -> list[dict[str, Any]]:
     )
 
 
-def find_health_packages(query: str) -> list[dict[str, Any]]:
+def find_health_packages(query: str = "") -> list[dict[str, Any]]:
     """Packages by name, category, audience, or what they include.
 
     included_tests_and_services is free prose inside the relational store, so

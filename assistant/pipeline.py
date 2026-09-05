@@ -1,5 +1,5 @@
 import asyncio
-from collections.abc import AsyncIterator
+from collections.abc import AsyncIterator, Awaitable, Callable
 from dataclasses import dataclass
 
 from assistant.exceptions import UpstreamBusyError
@@ -20,19 +20,31 @@ class Event:
     detail: str = ""
 
 
-NOTHING_SAID = (
-    "Sorry, I did not catch that. Could you put it another way? I can help with"
-    " doctors and fees, channeling times, lab tests and health packages."
-)
+@dataclass(frozen=True)
+class Source:
+    """A place answers come from: what to call it, and how to ask it."""
 
-# What each route reports it is doing, and therefore which sources it consults.
-TOOLS = {
-    Route.SQL: [("sql", "Querying the hospital database")],
-    Route.VECTOR: [("vector", "Searching hospital information")],
-    Route.BOTH: [
-        ("sql", "Querying the hospital database"),
-        ("vector", "Searching hospital information"),
-    ],
+    name: str
+    doing: str
+    retrieve: Callable[[str], Awaitable[list[Passage]]]
+
+
+async def _from_vector(question: str) -> list[Passage]:
+    # Retrieval is CPU-bound ONNX work, so it runs off the event loop.
+    return await asyncio.to_thread(retrieve_vector.retrieve, question)
+
+
+SQL = Source("sql", "Querying the hospital database", retrieve_sql.retrieve)
+VECTOR = Source("vector", "Searching hospital information", _from_vector)
+
+# The one place a route says which sources it consults. Adding a third source
+# is a line here, not a branch in three functions.
+CONSULTS: dict[Route, tuple[Source, ...]] = {
+    Route.SQL: (SQL,),
+    Route.VECTOR: (VECTOR,),
+    Route.BOTH: (SQL, VECTOR),
+    Route.FAQ: (),
+    Route.REFUSE: (),
 }
 
 
@@ -67,8 +79,9 @@ async def run(conversation_id: str, question: str) -> AsyncIterator[Event]:
     # upstream failure has already said something more useful, so it stands.
     if not failed and not "".join(spoken).strip():
         logger.warning("The %s route produced no answer", decision.route.value)
-        spoken = [NOTHING_SAID]
-        yield Event(kind="token", value=NOTHING_SAID)
+        nothing_said = prompt("nothing_said").strip()
+        spoken = [nothing_said]
+        yield Event(kind="token", value=nothing_said)
 
     store.remember(conversation_id, question, "".join(spoken), decision.route.value)
     yield Event(kind="done", value="")
@@ -82,10 +95,12 @@ async def _turn(
         yield Event(kind="token", value=prompt("refusal").strip())
         return
 
-    passages = await _retrieve(decision.route, decision.question)
+    sources = CONSULTS[decision.route]
 
-    for name, doing in TOOLS.get(decision.route, []):
-        yield Event(kind="tool", value=name, detail=doing)
+    for source in sources:
+        yield Event(kind="tool", value=source.name, detail=source.doing)
+
+    passages = await _gather(sources, decision.question)
 
     for citation in _citations(passages):
         yield Event(kind="source", value=citation)
@@ -111,24 +126,11 @@ async def _speak(
         yield Event(kind="error", value=str(error))
 
 
-async def _retrieve(chosen: Route, question: str) -> list[Passage]:
-    if chosen is Route.FAQ:
-        return []
+async def _gather(sources: tuple[Source, ...], question: str) -> list[Passage]:
+    """Ask every source at once: they share nothing, so waiting is pure latency."""
+    found = await asyncio.gather(*(source.retrieve(question) for source in sources))
 
-    if chosen is Route.SQL:
-        return await retrieve_sql.retrieve(question)
-
-    if chosen is Route.VECTOR:
-        return await asyncio.to_thread(retrieve_vector.retrieve, question)
-
-    # Both sources, concurrently: they share nothing, so waiting for one before
-    # starting the other only adds latency.
-    from_sql, from_vector = await asyncio.gather(
-        retrieve_sql.retrieve(question),
-        asyncio.to_thread(retrieve_vector.retrieve, question),
-    )
-
-    return from_sql + from_vector
+    return [passage for passages in found for passage in passages]
 
 
 def _citations(passages: list[Passage]) -> list[str]:

@@ -15,10 +15,6 @@ SMALL_TALK_OUTPUT = 700
 # numbers in them are invented. Sources are shown from the retrieved passages
 # instead, so any marker that survives is stripped.
 CITATION_MARKER = re.compile(r"【[^】]*】|\[\d+\]")
-NO_EVIDENCE = (
-    "I don't have that in my sources. Please call Nawaloka Hospitals on"
-    " 0115 577 111 and they can help."
-)
 
 
 async def answer(
@@ -31,7 +27,7 @@ async def answer(
     failure a grounded assistant exists to prevent.
     """
     if not passages:
-        yield NO_EVIDENCE
+        yield prompt("no_evidence").strip()
         return
 
     messages = [

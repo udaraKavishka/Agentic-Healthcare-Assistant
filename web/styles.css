@@ -238,6 +238,12 @@
         border-color: #c7dbff;
         color: var(--blue-deep);
     }
+    /* Streamlit puts the label in a div carrying a title attribute, which the
+       browser shows as a tooltip repeating text already on screen. Taking the
+       div out of hit-testing leaves the button as the hover target, so no
+       tooltip appears and the click still lands. */
+    .stButton button div[title] {pointer-events: none;}
+
     /* Streamlit clamps a button label to one line and adds an ellipsis. These
        are questions, so they wrap instead. */
     .stButton button div,
