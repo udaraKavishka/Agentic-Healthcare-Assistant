@@ -4,15 +4,15 @@ windows:
   - window_name: api
     panes:
       - shell_command:
-        - source .venv/bin/activate 
+        - source .venv/bin/activate
         - sleep 5
         - uv run uvicorn assistant.api.app:app --reload --port 8000
   - window_name: web
     panes:
       - shell_command:
-        - source .venv/bin/activate 
+        - source .venv/bin/activate
         - sleep 5
         - uv run streamlit run app.py
   - window_name: extra
     panes:
-      - shell_command: 
+      - shell_command:
