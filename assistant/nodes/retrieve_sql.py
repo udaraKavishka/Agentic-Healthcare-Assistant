@@ -22,7 +22,7 @@ async def retrieve(question: str) -> list[Passage]:
     The arguments are what matter: "which package includes a Pap smear" has to
     reach the template as "Pap smear", not as a word lifted from the sentence.
     """
-    calls = await _chosen(question)
+    calls = await chosen(question)
     rows = []
 
     for name, arguments in calls:
@@ -34,13 +34,13 @@ async def retrieve(question: str) -> list[Passage]:
 
         rows += _run(tool, arguments)
 
-    if not rows and not calls:
-        rows = sql_templates.find_doctors()
-
+    # No fallback query. Answering an unmatched question with the doctor list
+    # gives the answer model evidence that has nothing to do with the question,
+    # which is worse than the abstention an empty result produces.
     return sql_templates.to_passages(rows, CITATION)
 
 
-async def _chosen(question: str) -> list[tuple[str, dict]]:
+async def chosen(question: str) -> list[tuple[str, dict]]:
     messages = [
         {"role": "system", "content": INSTRUCTION},
         {"role": "user", "content": question},

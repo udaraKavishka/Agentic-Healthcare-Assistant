@@ -1,0 +1,72 @@
+# Does the database route return the right rows, not just the right route?
+#
+# Each case names the query the model should call and the facts that have to
+# survive into the passages. `absent` is the half that catches a template
+# answering with the whole table, which reads as correct until you count.
+
+- question: Who are your cardiologists?
+  tool: find_doctors
+  expect: ["Prakash Priyadarshan", "Cardiology"]
+  absent: ["Duminda Pathirana"]
+
+- question: Which doctors consult for under 3000 rupees?
+  tool: find_doctors
+  expect: ["Duminda Pathirana", "Usha Samarasinghe", "Chandima De Mel"]
+  absent: ["Punsith Gunawardena"]
+
+- question: What does Dr Prakash Priyadarshan charge?
+  tool: find_doctors
+  expect: ["4000"]
+
+- question: When does Dr Duminda Pathirana channel?
+  tool: get_schedule
+  expect: ["Daily", "16:30", "Room 004"]
+
+- question: Is Dr Duminda Pathirana available on a Tuesday?
+  tool: get_schedule
+  expect: ["Daily"]
+
+- question: What room does Dr Prakash Priyadarshan see patients in?
+  tool: get_schedule
+  expect: ["Heart Centre - Room 01"]
+
+- question: Which doctor works on Sunday?
+  tool: get_schedule
+  expect: ["Sunday"]
+
+- question: How much is a dengue test?
+  tool: find_lab_tests
+  expect: ["3200", "LAB-DENGUE"]
+
+- question: Do I need to fast before a lipid profile?
+  tool: find_lab_tests
+  expect: ["Advanced Lipid & ApoB Profile", "12"]
+
+- question: How long does a thyroid profile report take?
+  tool: find_lab_tests
+  expect: ["Full Thyroid Profile", "12"]
+
+- question: What is the code for the vitamin D test?
+  tool: find_lab_tests
+  expect: ["LAB-VITD"]
+
+- question: Which is the cheapest lab test you offer?
+  tool: find_lab_tests
+  expect: ["Erythrocyte Sedimentation Rate", "600"]
+
+- question: Which health package includes a Pap smear?
+  tool: find_health_packages
+  expect: ["Pap Smear"]
+  absent: ["Pre-Employment Medical Checkup"]
+
+- question: Is there a health package for women over 40?
+  tool: find_health_packages
+  expect: ["Females 40 years and above"]
+
+- question: What does the pre-marital screening cost?
+  tool: find_health_packages
+  expect: ["Pre-Marital Health Screening", "16500"]
+
+- question: What health packages do you have for young adults?
+  tool: find_health_packages
+  expect: ["18-30"]

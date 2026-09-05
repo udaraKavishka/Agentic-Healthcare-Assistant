@@ -1,0 +1,51 @@
+# Does hybrid retrieval put the right page in front of the answer model?
+#
+# `sources` lists the pages that would let the question be answered honestly.
+# A question is a hit when any of them appears in the reranked top five, and
+# the rank it appears at is what the reciprocal rank measures: a page ranked
+# fifth is inside the prompt but behind four passages competing with it.
+
+- question: Do you have a heart centre?
+  sources: ["/heart-centre"]
+- question: What does the neuro centre treat?
+  sources: ["/neuro-centre"]
+- question: Tell me about your dialysis unit.
+  sources: ["/dialysis"]
+- question: Does the hospital have a blood bank?
+  sources: ["/blood-bank"]
+- question: What kinds of hospital rooms are available?
+  sources: ["/room-booking", "/hospital-rooms"]
+- question: Tell me about the VVIP room.
+  sources: ["/hospital-rooms/vvip-room"]
+- question: What physiotherapy services do you offer?
+  sources: ["/physiotherapy"]
+- question: Do you have a fertility clinic?
+  sources: ["/fertility-care"]
+- question: What cancer treatment is available?
+  sources: ["/cancer-blood-disease"]
+- question: Do you do bone marrow transplants?
+  sources: ["/bone-marrow-transplant-unit"]
+- question: How do I contact the hospital?
+  sources: ["/contactus"]
+- question: Is there an ambulance service?
+  sources: ["/ambulance-emergency-patient-care"]
+- question: What imaging scans can I get?
+  sources: ["/radiology"]
+- question: Do you have a diabetes clinic?
+  sources: ["/diabetes-centre"]
+- question: What dental treatments are available?
+  sources: ["/dental-unit"]
+- question: Do you offer vaccinations?
+  sources: ["/vaccination-centre"]
+- question: Is there a dietitian I can see?
+  sources: ["/nutrition-and-dietetics"]
+- question: What eye treatments do you provide?
+  sources: ["/eye-care", "/lasik-advanced-eye-care-centre"]
+- question: Do you treat sports injuries?
+  sources: ["/rheumatology-sports-medicine"]
+- question: What services are there for international patients?
+  sources: ["/international"]
+- question: Tell me about maternity care.
+  sources: ["/mother-and-baby"]
+- question: What ENT treatment do you offer?
+  sources: ["/ear-nose-throat-care"]

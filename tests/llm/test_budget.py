@@ -46,3 +46,16 @@ def test_the_estimate_covers_the_prompt_and_the_reply():
     messages = [{"role": "user", "content": "a" * 400}]
 
     assert estimate_tokens(messages, max_output=50) == 150
+
+
+async def test_a_request_larger_than_the_minute_is_refused_not_crashed():
+    """Waiting cannot free room that the limit never had.
+
+    With nothing queued there is no entry to expire, so the wait calculation has
+    no oldest spend to work from and has to say so rather than index an empty
+    window.
+    """
+    budget = Budget(requests_per_minute=30, tokens_per_minute=100)
+
+    with pytest.raises(TimeoutError, match="more than the 100"):
+        await budget.reserve(500)

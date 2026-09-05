@@ -120,3 +120,7 @@ no_evidence: |
 nothing_said: |
   Sorry, I did not catch that. Could you put it another way? I can help with
   doctors and fees, channeling times, lab tests and health packages.
+
+failed: |
+  Something went wrong on my side. Please try again, or call Nawaloka
+  Hospitals on 0115 577 111.

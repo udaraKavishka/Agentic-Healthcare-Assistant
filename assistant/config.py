@@ -31,6 +31,8 @@ class Settings(BaseSettings):
     HOSPITAL_DB: Path = ROOT / "knowledge" / "hospital.db"
     SCRAPED_DIR: Path = ROOT / "knowledge" / "scraped"
     FAQ_PATH: Path = ROOT / "knowledge" / "faq.yml"
+    # Written by `make index` from the FAQ sections the website publishes.
+    HARVESTED_FAQ_PATH: Path = ROOT / "knowledge" / "faq.harvested.yml"
     QDRANT_PATH: Path = ROOT / "knowledge" / "qdrant"
     CONVERSATIONS_DB: Path = ROOT / "knowledge" / "conversations.db"
 

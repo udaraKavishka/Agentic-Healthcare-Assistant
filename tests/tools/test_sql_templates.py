@@ -73,8 +73,33 @@ def test_a_test_is_found_when_its_words_are_not_contiguous():
     """The row reads "Advanced Lipid & ApoB Profile"; the patient types two words."""
     tests = find_lab_tests("lipid profile")
 
-    assert len(tests) == 1
     assert "Lipid" in tests[0]["test_name"]
+
+
+def test_the_row_matching_the_most_words_comes_first():
+    """Any word matches, so "Full Thyroid Profile" comes back for "profile" too.
+
+    Which is the point: ranking, not filtering, is what stops an exact match
+    from hiding a row the patient meant. The closest row still leads.
+    """
+    tests = find_lab_tests("lipid profile")
+
+    assert len(tests) > 1
+    assert "Thyroid" in tests[-1]["test_name"]
+
+
+def test_a_near_miss_is_not_hidden_by_an_exact_match():
+    """ "Women over 40" matches one package exactly and another only on the number.
+
+    Requiring every word returns the exact one alone and never reaches
+    "Females 40 years and above", which is the package that was asked for.
+    """
+    audiences = [
+        row["target_audience"] for row in find_health_packages("women over 40")
+    ]
+
+    assert "Women over 40 or high risk" == audiences[0]
+    assert "Females 40 years and above" in audiences
 
 
 def test_word_order_does_not_matter():
@@ -98,3 +123,30 @@ def test_an_omitted_query_lists_everything():
 def test_a_specific_term_still_narrows():
     assert len(find_health_packages("Pap smear")) == 3
     assert len(find_lab_tests("dengue")) == 1
+
+
+def test_a_day_on_its_own_finds_whoever_is_working():
+    """ "Which doctor works on Sunday?" names no doctor.
+
+    The template used to require one, so the model had nothing to call and
+    answered from the list of doctors instead of the timetable.
+    """
+    sessions = get_schedule(day="Sunday")
+    working = {session["doctor"] for session in sessions}
+
+    assert working == {"Prof. Arjuna De Silva", "Dr. Duminda Pathirana"}
+
+
+def test_a_query_widens_rather_than_coming_back_empty():
+    """No package is named "women over 40"; two are meant by it.
+
+    Requiring every word finds nothing, and nothing reads to the patient as
+    "we do not offer that", so the search falls back to any word.
+    """
+    names = [row["package_name"] for row in find_health_packages("women screening 40")]
+
+    assert "Executive Female Screening (Above 40)" in names
+
+
+def test_widening_does_not_invent_a_match():
+    assert find_lab_tests("helicopter maintenance") == []

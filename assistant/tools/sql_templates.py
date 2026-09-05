@@ -41,8 +41,8 @@ def find_doctors(
     )
 
 
-def get_schedule(doctor_name: str, day: str | None = None) -> list[dict[str, Any]]:
-    """Channeling sessions for a doctor, optionally on one day.
+def get_schedule(doctor_name: str = "", day: str = "") -> list[dict[str, Any]]:
+    """Channeling sessions, narrowed by doctor or by day or by both.
 
     A daily clinic is stored as day_of_week = 'Daily', not as seven weekday
     rows. Filtering with `= :day` silently drops it, producing a wrong answer
@@ -69,23 +69,16 @@ def get_schedule(doctor_name: str, day: str | None = None) -> list[dict[str, Any
 
 
 def find_lab_tests(query: str = "") -> list[dict[str, Any]]:
-    columns = (
-        "test_name",
-        "test_code",
-        "category",
-        "preparation_instructions",
-    )
-    where, params = _all_words(query, columns)
-
-    return fetch(
-        f"""
+    return _search(
+        query,
+        columns=("test_name", "test_code", "category", "preparation_instructions"),
+        statement="""
         SELECT test_code, test_name, category, price, fasting_required_hours,
                preparation_instructions, report_delivery_hours
         FROM lab_tests
         WHERE {where}
         ORDER BY price
         """,
-        params,
     )
 
 
@@ -96,34 +89,54 @@ def find_health_packages(query: str = "") -> list[dict[str, Any]]:
     "which package includes a Pap smear?" is answered here with LIKE. It reads
     like an unstructured question but the answer lives in a governed row.
     """
-    columns = (
-        "package_name",
-        "category",
-        "target_audience",
-        "included_tests_and_services",
-    )
-    where, params = _all_words(query, columns)
-
-    return fetch(
-        f"""
+    return _search(
+        query,
+        columns=(
+            "package_name",
+            "category",
+            "target_audience",
+            "included_tests_and_services",
+        ),
+        statement="""
         SELECT package_name, category, price, target_audience,
                included_tests_and_services
         FROM health_packages
         WHERE {where}
         ORDER BY price
         """,
-        params,
     )
 
 
-def _all_words(query: str, columns: tuple[str, ...]) -> tuple[str, dict[str, Any]]:
-    """Require every word, in any of the columns, in any order.
+def _search(
+    query: str, columns: tuple[str, ...], statement: str
+) -> list[dict[str, Any]]:
+    """Any word matches, and the rows that matched the most come first.
+
+    Requiring every word is the precise reading and it hides rows the patient
+    meant: "women over 40" matches "Women over 40 or high risk" on all three
+    words, so an exact-match search stops there and never reaches "Females 40
+    years and above", which is the package that was asked for.
+
+    Matching any word finds both and ranking by how many words matched puts the
+    closest first. The catalogues are tens of rows, so the cost of the near
+    misses that come with them is a longer prompt, not a worse answer.
+    """
+    where, params = _clauses(query, columns)
+    rows = fetch(statement.format(where=where), params)
+    words = _words(query)
+
+    # Stable, so rows that matched equally well keep the statement's own order.
+    return sorted(rows, key=lambda row: -_matched(row, words))
+
+
+def _clauses(query: str, columns: tuple[str, ...]) -> tuple[str, dict[str, Any]]:
+    """Match word by word, in any of the columns, in any order.
 
     A single LIKE over the whole phrase matches only contiguous text: "lipid
     profile" misses "Advanced Lipid & ApoB Profile", which is the row the
     patient meant.
     """
-    words = WORD.findall(query)
+    words = _words(query)
 
     if not words:
         return "1 = 1", {}
@@ -138,7 +151,18 @@ def _all_words(query: str, columns: tuple[str, ...]) -> tuple[str, dict[str, Any
             "(" + " OR ".join(f"{column} LIKE :{key}" for column in columns) + ")"
         )
 
-    return " AND ".join(clauses), params
+    return " OR ".join(clauses), params
+
+
+def _words(query: str) -> list[str]:
+    return [word.lower() for word in WORD.findall(query)]
+
+
+def _matched(row: dict[str, Any], words: list[str]) -> int:
+    """How much of the query this row accounts for, counted once per word."""
+    haystack = " ".join(str(value) for value in row.values()).lower()
+
+    return sum(word in haystack for word in words)
 
 
 def _name_match(doctor_name: str) -> tuple[str, dict[str, Any]]:

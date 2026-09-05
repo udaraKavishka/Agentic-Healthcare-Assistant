@@ -46,6 +46,12 @@ class Budget:
         ):
             return 0.0
 
+        if not self._spent:
+            raise TimeoutError(
+                f"{tokens} tokens is more than the {self.tokens_per_minute}"
+                " allowed in a minute."
+            )
+
         oldest, _ = self._spent[0]
         return max(0.0, WINDOW_SECONDS - (time.monotonic() - oldest))
 

@@ -1,6 +1,6 @@
 import sqlite3
 import time
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from typing import Any
 
@@ -37,7 +37,7 @@ def fetch(sql: str, params: dict[str, Any] | None = None) -> list[dict[str, Any]
     return [dict(row) for row in rows]
 
 
-def _deadline():
+def _deadline() -> Callable[[], int]:
     """Abort a query that outstays its welcome.
 
     `sqlite3.connect(timeout=...)` bounds how long a call waits for a lock, not

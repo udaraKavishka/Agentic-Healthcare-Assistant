@@ -1,19 +1,5 @@
 from assistant.knowledge_base.chunk import Chunk
-from assistant.knowledge_base.index import (
-    _contextualised,
-    _point_id,
-    _split_front_matter,
-)
-
-DOCUMENT = """---
-url: https://www.nawaloka.com/laboratory
-title: Laboratory
----
-
-# Laboratory
-
-Body text.
-"""
+from assistant.knowledge_base.index import _contextualised, _point_id
 
 
 def test_a_chunk_carries_its_page_and_heading():
@@ -26,18 +12,6 @@ def test_a_chunk_before_the_first_heading_is_not_left_with_a_dangling_dash():
     chunk = Chunk(text="Body.", heading="", url="u", title="Heart Centre")
 
     assert _contextualised(chunk) == "Heart Centre\n\nBody."
-
-
-def test_front_matter_is_split_back_out():
-    url, title, body = _split_front_matter(DOCUMENT)
-
-    assert url == "https://www.nawaloka.com/laboratory"
-    assert title == "Laboratory"
-    assert body.strip().startswith("# Laboratory")
-
-
-def test_a_document_without_front_matter_is_all_body():
-    assert _split_front_matter("# Laboratory\n") == ("", "", "# Laboratory\n")
 
 
 def test_an_unchanged_chunk_keeps_its_id():

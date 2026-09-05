@@ -1,4 +1,4 @@
-.PHONY: install seed scrape index evaluate run ui dev test lint check
+.PHONY: install seed scrape index evaluate run ui dev tmux test lint check
 
 install:
 	uv sync
@@ -22,7 +22,12 @@ ui:
 	uv run streamlit run app.py
 
 dev:
-	uv run uvicorn assistant.api.app:app --reload --port 8000 & uv run streamlit run app.py
+	trap 'kill 0' EXIT; \
+	uv run uvicorn assistant.api.app:app --reload --port 8000 & \
+	uv run streamlit run app.py
+
+tmux:
+	uvx tmuxp load assistant_tmux.yaml
 
 test:
 	uv run pytest tests/ --tb=short

@@ -60,13 +60,30 @@ async def run(conversation_id: str, question: str) -> AsyncIterator[Event]:
     taken = ""
     failed = False
 
-    async for event in _events(question, history):
-        if event.kind == "token":
-            spoken.append(event.value)
-        if event.kind == "route":
-            taken = event.value
-        failed = failed or event.kind == "error"
-        yield event
+    try:
+        async for event in _events(question, history):
+            if event.kind == "token":
+                spoken.append(event.value)
+            if event.kind == "route":
+                taken = event.value
+            failed = failed or event.kind == "error"
+            yield event
+    except UpstreamBusyError as error:
+        # Raised by any stage that calls the model, not just the router, so it
+        # is caught once here rather than at each of them.
+        logger.info("Turn shed: %s", error)
+        failed = True
+        spoken.append(str(error))
+        yield Event(kind="error", value=str(error))
+    except Exception:
+        # The response is already streaming, so letting this reach the server
+        # would abort the connection mid-answer and lose the turn. The patient
+        # gets a sentence instead of a dead socket.
+        logger.exception("The %s route failed", taken or "unrouted")
+        failed = True
+        broke = prompt("failed").strip()
+        spoken.append(broke)
+        yield Event(kind="error", value=broke)
 
     # A model that spends its whole budget reasoning returns nothing at all, and
     # an empty reply reads as a broken assistant rather than a busy one. An
@@ -87,14 +104,14 @@ async def _events(question: str, history: list[ChatMessage]) -> AsyncIterator[Ev
 
     if cached is not None:
         yield Event(kind="route", value=Route.FAQ.value, detail="Answered from the FAQ")
-        yield Event(kind="token", value=cached)
+
+        if cached.citation:
+            yield Event(kind="source", value=cached.citation)
+
+        yield Event(kind="token", value=cached.text)
         return
 
-    try:
-        decision = await route.route(question, history)
-    except UpstreamBusyError as error:
-        yield Event(kind="error", value=str(error))
-        return
+    decision = await route.route(question, history)
 
     yield Event(kind="route", value=decision.route.value, detail=decision.reason)
 

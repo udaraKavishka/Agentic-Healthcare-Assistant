@@ -4,8 +4,9 @@ from collections.abc import Iterator
 from qdrant_client import QdrantClient, models
 
 from assistant.config import settings
-from assistant.knowledge_base import embed
+from assistant.knowledge_base import embed, faq_sections
 from assistant.knowledge_base.chunk import Chunk, chunk_page
+from assistant.knowledge_base.corpus import pages
 from assistant.knowledge_base.store import (
     COLLECTION,
     DENSE,
@@ -22,12 +23,10 @@ NAMESPACE = uuid.UUID("6f9c1e1a-58d8-4f0e-9d1b-2f0f9a6f1e2c")
 
 def load_corpus() -> list[Chunk]:
     chunks: list[Chunk] = []
-    documents = sorted(settings.SCRAPED_DIR.glob("*.md"))
+    documents = pages()
 
-    for path in documents:
-        text = path.read_text()
-        url, title, body = _split_front_matter(text)
-        chunks.extend(chunk_page(body, url=url or path.stem, title=title or path.stem))
+    for page in documents:
+        chunks.extend(chunk_page(page.body, url=page.url, title=page.title))
 
     logger.info("Read %d chunks from %d documents", len(chunks), len(documents))
     return chunks
@@ -62,6 +61,8 @@ def build() -> int:
         logger.info("Removed %d chunks no longer in the corpus", len(stale))
 
     logger.info("Indexed %d chunks into %s", len(wanted), settings.QDRANT_PATH)
+    faq_sections.harvest()
+
     return len(wanted)
 
 
@@ -164,21 +165,3 @@ def _contextualised(chunk: Chunk) -> str:
         return chunk.text
 
     return f"{source}\n\n{chunk.text}"
-
-
-def _split_front_matter(text: str) -> tuple[str, str, str]:
-    if not text.startswith("---"):
-        return "", "", text
-
-    _, _, rest = text.partition("---")
-    front, _, body = rest.partition("---")
-
-    url = title = ""
-    for line in front.splitlines():
-        key, _, value = line.partition(":")
-        if key.strip() == "url":
-            url = value.strip()
-        if key.strip() == "title":
-            title = value.strip()
-
-    return url, title, body

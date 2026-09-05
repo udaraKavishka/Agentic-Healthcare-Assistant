@@ -2,6 +2,7 @@ from collections.abc import AsyncIterator
 from functools import lru_cache
 
 from groq import APIStatusError, AsyncGroq, BadRequestError, RateLimitError
+from groq.types.chat import ChatCompletionMessageToolCall
 
 from assistant.config import settings
 from assistant.exceptions import UpstreamBusyError
@@ -41,7 +42,7 @@ async def choose_tools(
     model: str,
     tools: list[dict],
     max_output: int = 512,
-):
+) -> list[ChatCompletionMessageToolCall]:
     """Ask the model which queries to run, and with what arguments."""
     await _reserve(messages, max_output)
 

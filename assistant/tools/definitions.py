@@ -54,12 +54,13 @@ TOOLS = (
     Tool(
         run=sql_templates.get_schedule,
         description=(
-            "Channeling sessions for one doctor: day, start and end time, room"
-            " and fee. Use for when a named doctor is available."
+            "Channeling sessions: doctor, day, start and end time, room and"
+            " fee. Use for when a doctor is available, and for who is"
+            " available on a given day. Either argument may be omitted."
         ),
         parameters={
             "doctor_name": {
-                "type": "string",
+                "type": ["string", "null"],
                 "description": "The doctor's name as the patient gave it",
             },
             "day": {
@@ -74,8 +75,10 @@ TOOLS = (
             "Lab tests: code, name, category, price, fasting hours, preparation"
             " instructions and report turnaround. Search by the name of the"
             " test, not by a word from the question: for 'do I need to fast"
-            " before a lipid profile' pass 'lipid profile'. Omit the query to"
-            " list every test."
+            " before a lipid profile' pass 'lipid profile'. Results come back"
+            " cheapest first, so omit the query when the question names no"
+            " particular test: 'the cheapest test' and 'what tests do you do'"
+            " are both the whole list."
         ),
         parameters={
             "query": {
@@ -90,8 +93,10 @@ TOOLS = (
             "Health packages: name, category, price, who they are for, and the"
             " full list of tests each includes. The contents are stored as"
             " prose, so search by the thing being looked for: for 'which package"
-            " includes a Pap smear' pass 'Pap smear'. Omit the query to list"
-            " every package."
+            " includes a Pap smear' pass 'Pap smear'. Results come back cheapest"
+            " first, so omit the query when the question names no particular"
+            " package: 'the cheapest package' and 'what packages do you have'"
+            " are both the whole list."
         ),
         parameters={
             "query": {

@@ -58,3 +58,23 @@ def test_every_phrasing_reaches_the_same_answer():
     entry = Entry(question="Hello", answer="Hi there.", asked_as=("hi", "hey"))
 
     assert entry.phrasings == ("Hello", "hi", "hey")
+
+
+def test_the_harvested_faq_ships_with_the_repository():
+    """`make index` writes it from the corpus, so it can be absent locally and
+    the fast path then silently shrinks to the curated entries alone."""
+    assert settings.HARVESTED_FAQ_PATH.exists(), (
+        f"no harvested FAQ at {settings.HARVESTED_FAQ_PATH}; run `make index`"
+    )
+
+    entries = yaml.safe_load(settings.HARVESTED_FAQ_PATH.read_text())
+
+    assert entries
+    assert all({"question", "answer", "source"} <= set(entry) for entry in entries)
+
+
+def test_a_question_the_website_answers_is_matched_with_its_page():
+    answer = lookup("Where is Nawaloka Hospital located?")
+
+    assert answer is not None
+    assert "nawaloka.com" in answer.citation

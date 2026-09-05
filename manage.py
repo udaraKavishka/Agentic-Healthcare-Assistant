@@ -23,7 +23,15 @@ def scrape() -> None:
 @app.command()
 def build_index() -> None:
     """Embed the scraped corpus into the vector store."""
-    index.build()
+    try:
+        index.build()
+    except RuntimeError as error:
+        typer.secho(
+            "The vector store is already open. Stop the API and try again.",
+            fg=typer.colors.RED,
+            err=True,
+        )
+        raise typer.Exit(code=1) from error
 
 
 @app.command()
