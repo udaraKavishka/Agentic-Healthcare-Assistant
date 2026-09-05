@@ -19,3 +19,17 @@ def css() -> str:
     logo = f':root {{--logo: url("data:image/svg+xml;base64,{mark}");}}'
 
     return f"<style>{logo}{STYLESHEET.read_text()}</style>"
+
+
+def skeleton() -> str:
+    """Placeholder bars in the shape of a reply.
+
+    Always in the page; the stylesheet reveals it only while Streamlit is
+    running a script. Written and cleared from Python it would never be seen,
+    because both happen in one pass before the browser paints.
+    """
+    bars = "".join(
+        f'<div class="bar" style="width: {width}%"></div>' for width in (38, 64, 52)
+    )
+
+    return f'<div class="skeleton">{bars}</div>'

@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from assistant.exceptions import UpstreamBusyError
 from assistant.logging import logger
 from assistant.memory import store
-from assistant.nodes import retrieve_sql, retrieve_vector, route, synthesize
+from assistant.nodes import faq, retrieve_sql, retrieve_vector, route, synthesize
 from assistant.prompts import prompt
 from assistant.schemas import ChatMessage
 from assistant.state import Passage, Route, RouteDecision
@@ -56,6 +56,39 @@ async def run(conversation_id: str, question: str) -> AsyncIterator[Event]:
     the tokens, on a budget of eight thousand a minute.
     """
     history = store.history(conversation_id)
+    spoken: list[str] = []
+    taken = ""
+    failed = False
+
+    async for event in _events(question, history):
+        if event.kind == "token":
+            spoken.append(event.value)
+        if event.kind == "route":
+            taken = event.value
+        failed = failed or event.kind == "error"
+        yield event
+
+    # A model that spends its whole budget reasoning returns nothing at all, and
+    # an empty reply reads as a broken assistant rather than a busy one. An
+    # upstream failure has already said something more useful, so it stands.
+    if not failed and not "".join(spoken).strip():
+        logger.warning("The %s route produced no answer", taken)
+        nothing_said = prompt("nothing_said").strip()
+        spoken = [nothing_said]
+        yield Event(kind="token", value=nothing_said)
+
+    store.remember(conversation_id, question, "".join(spoken), taken)
+    yield Event(kind="done", value="")
+
+
+async def _events(question: str, history: list[ChatMessage]) -> AsyncIterator[Event]:
+    """Answer the question, by the cheapest route that can."""
+    cached = faq.lookup(question)
+
+    if cached is not None:
+        yield Event(kind="route", value=Route.FAQ.value, detail="Answered from the FAQ")
+        yield Event(kind="token", value=cached)
+        return
 
     try:
         decision = await route.route(question, history)
@@ -65,26 +98,8 @@ async def run(conversation_id: str, question: str) -> AsyncIterator[Event]:
 
     yield Event(kind="route", value=decision.route.value, detail=decision.reason)
 
-    spoken: list[str] = []
-    failed = False
-
     async for event in _turn(decision, history):
-        if event.kind == "token":
-            spoken.append(event.value)
-        failed = failed or event.kind == "error"
         yield event
-
-    # A model that spends its whole budget reasoning returns nothing at all, and
-    # an empty reply reads as a broken assistant rather than a busy one. An
-    # upstream failure has already said something more useful, so it stands.
-    if not failed and not "".join(spoken).strip():
-        logger.warning("The %s route produced no answer", decision.route.value)
-        nothing_said = prompt("nothing_said").strip()
-        spoken = [nothing_said]
-        yield Event(kind="token", value=nothing_said)
-
-    store.remember(conversation_id, question, "".join(spoken), decision.route.value)
-    yield Event(kind="done", value="")
 
 
 async def _turn(

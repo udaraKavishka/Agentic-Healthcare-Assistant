@@ -8,7 +8,7 @@ import streamlit as st
 from streamlit.delta_generator import DeltaGenerator
 
 from web.client import Event, ask
-from web.styles import LOGO, css
+from web.styles import LOGO, css, skeleton
 
 API_URL = "http://localhost:8000"
 PLACEHOLDER = "Ask about doctors, tests, packages or the hospital"
@@ -64,6 +64,7 @@ def main() -> None:
     if st.session_state.messages:
         _conversation()
     else:
+        st.markdown(skeleton(), unsafe_allow_html=True)
         _landing()
 
     # Last, because Streamlit renders everything after `chat_input` inside the
@@ -112,7 +113,7 @@ def _reset() -> None:
 
 
 def _header() -> None:
-    brand, action = st.columns([5, 1], vertical_alignment="center")
+    brand, action = st.columns([4, 1.1], vertical_alignment="center")
 
     with brand:
         st.markdown(
@@ -124,11 +125,11 @@ def _header() -> None:
         )
 
     with action:
-        st.markdown('<div class="new-chat">', unsafe_allow_html=True)
-        if st.session_state.messages and st.button("New chat"):
+        # Keyed so the stylesheet can find it: a hand-written wrapper would be
+        # closed by Streamlit before the button is drawn inside it.
+        if st.session_state.messages and st.button("＋  New chat", key="new-chat"):
             _reset()
             st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
 
 
 def _landing() -> None:

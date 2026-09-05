@@ -65,18 +65,21 @@
         color: var(--ink);
     }
 
-    /* A quiet text button, not a panel. */
-    .new-chat button {
+    /* A quiet pill: the plus reads as the action, the words say which one. */
+    .st-key-new-chat button {
         min-height: 0 !important;
-        padding: 0.25rem 0.7rem !important;
-        font-size: 0.76rem !important;
+        width: auto !important;
+        padding: 0.3rem 0.75rem !important;
+        font-size: 0.78rem !important;
+        font-weight: 500 !important;
+        white-space: nowrap !important;
         border-radius: 999px !important;
         border: 1px solid var(--line) !important;
         background: #ffffff !important;
         color: var(--muted) !important;
         box-shadow: none !important;
     }
-    .new-chat button:hover {
+    .st-key-new-chat button:hover {
         border-color: var(--blue) !important;
         color: var(--blue-deep) !important;
         background: var(--blue-soft) !important;
@@ -244,6 +247,10 @@
        tooltip appears and the click still lands. */
     .stButton button div[title] {pointer-events: none;}
 
+    /* The pill is one line; the wrap rule below is for the prompt cards. */
+    .st-key-new-chat button div,
+    .st-key-new-chat button p {white-space: nowrap !important;}
+
     /* Streamlit clamps a button label to one line and adds an ellipsis. These
        are questions, so they wrap instead. */
     .stButton button div,
@@ -306,4 +313,22 @@
         .msg-user {max-width: 90%;}
         .stButton button {min-height: 0; padding: 0.6rem 0.8rem;}
         .disclaimer {font-size: 0.7rem; bottom: 0.75rem;}
+    }
+
+    /* Grey bars in the shape of a reply, shown only while Streamlit is running
+       a script: a reload or a rerun, rather than an empty white screen. */
+    .skeleton {display: none; padding: 2rem 0 0;}
+    .stApp[data-test-script-state="running"] .skeleton,
+    .stApp:not([data-test-connection-state="CONNECTED"]) .skeleton {display: block;}
+    .skeleton .bar {
+        height: 0.85rem;
+        margin-bottom: 0.6rem;
+        border-radius: 0.4rem;
+        background: linear-gradient(90deg, #eef2f6 25%, #e2e8f0 50%, #eef2f6 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.3s infinite linear;
+    }
+    @keyframes shimmer {
+        from {background-position: 200% 0;}
+        to {background-position: -200% 0;}
     }

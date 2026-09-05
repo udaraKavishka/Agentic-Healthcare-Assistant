@@ -30,10 +30,13 @@ class Settings(BaseSettings):
     SOURCE_SQL: Path = ROOT / "knowledge" / "data.sql"
     HOSPITAL_DB: Path = ROOT / "knowledge" / "hospital.db"
     SCRAPED_DIR: Path = ROOT / "knowledge" / "scraped"
+    FAQ_PATH: Path = ROOT / "knowledge" / "faq.yml"
     QDRANT_PATH: Path = ROOT / "knowledge" / "qdrant"
     CONVERSATIONS_DB: Path = ROOT / "knowledge" / "conversations.db"
 
     RETRIEVE_TOP_K: int = 5
+    # Nearly identical questions are grouped together.
+    FAQ_THRESHOLD: float = 0.88
     # Turns kept verbatim for pronoun resolution; older ones are dropped so a
     # long conversation cannot grow past the minute's token budget.
     VERBATIM_TURNS: int = 6
