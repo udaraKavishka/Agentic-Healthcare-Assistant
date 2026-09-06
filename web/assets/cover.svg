@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" font-family="Noto Sans, Outfit, system-ui, sans-serif">
+  <!-- GitHub crops social cards on some surfaces, so everything drawn here
+       stays inside the 40pt safe area the template marks out. -->
+  <defs>
+    <radialGradient id="wash" cx="50%" cy="0%" r="80%">
+      <stop offset="0%" stop-color="#e8effe"/>
+      <stop offset="70%" stop-color="#ffffff"/>
+    </radialGradient>
+    <clipPath id="card">
+      <rect width="128" height="128" rx="28"/>
+    </clipPath>
+  </defs>
+
+  <rect width="1280" height="640" fill="#ffffff"/>
+  <rect width="1280" height="640" fill="url(#wash)"/>
+
+  <!-- The mark from web/assets/logo.svg, scaled 64 -> 128 and centred. -->
+  <g transform="translate(576 96) scale(2)">
+    <rect width="64" height="64" rx="14" fill="#dbe7fb"/>
+    <g clip-path="url(#card)" transform="scale(0.5)">
+      <g transform="scale(2)">
+        <rect x="6" y="52" width="52" height="18" rx="9" fill="#2563eb"/>
+        <rect x="5" y="25" width="8" height="15" rx="4" fill="#2563eb"/>
+        <rect x="51" y="25" width="8" height="15" rx="4" fill="#2563eb"/>
+        <rect x="11" y="10" width="42" height="42" rx="15" fill="#2563eb"/>
+        <rect x="30" y="14" width="4" height="10" rx="2" fill="#eef4ff"/>
+        <rect x="27" y="17" width="10" height="4" rx="2" fill="#eef4ff"/>
+        <rect x="17" y="28" width="30" height="16" rx="8" fill="#eef4ff"/>
+        <circle cx="25" cy="36" r="3.4" fill="#2563eb"/>
+        <circle cx="39" cy="36" r="3.4" fill="#2563eb"/>
+      </g>
+    </g>
+  </g>
+
+  <text x="640" y="322" text-anchor="middle" font-size="66" font-weight="700" fill="#0f1b2d">Agentic Healthcare Assistant</text>
+
+  <text x="640" y="386" text-anchor="middle" font-size="27" fill="#64748b">Routes each question between scraped web knowledge and a</text>
+  <text x="640" y="424" text-anchor="middle" font-size="27" fill="#64748b">hospital database, so patients never pick the source themselves.</text>
+
+  <g font-size="21" fill="#1d4ed8">
+    <rect x="322" y="480" width="146" height="46" rx="23" fill="#eef4ff"/>
+    <text x="395" y="509" text-anchor="middle">Qdrant RAG</text>
+    <rect x="484" y="480" width="130" height="46" rx="23" fill="#eef4ff"/>
+    <text x="549" y="509" text-anchor="middle">Text-to-SQL</text>
+    <rect x="630" y="480" width="140" height="46" rx="23" fill="#eef4ff"/>
+    <text x="700" y="509" text-anchor="middle">FastAPI SSE</text>
+    <rect x="786" y="480" width="172" height="46" rx="23" fill="#eef4ff"/>
+    <text x="872" y="509" text-anchor="middle">Streamlit chat UI</text>
+  </g>
+</svg>
