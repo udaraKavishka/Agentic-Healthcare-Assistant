@@ -25,15 +25,22 @@ DOCTORS = """
 
 
 def find_doctors(
-    specialty: str | None = None, max_fee: float | None = None
+    specialty: str | None = None,
+    name: str | None = None,
+    max_fee: float | None = None,
 ) -> list[dict[str, Any]]:
-    """Doctors, narrowed by speciality or by fee.
+    """Doctors, narrowed by speciality, by name, or by fee.
 
     The speciality is matched whole first and by stem only if that found
     nothing, so an exact request keeps its precision and an inflected one still
-    lands.
+    lands. Without a name argument the model answers "what does Dr X charge?"
+    by putting the name in the speciality and getting nothing back.
     """
     fee, params = _fee_clause(max_fee)
+
+    if name:
+        clause, named = _name_match(name)
+        fee, params = fee + [clause], params | named
 
     if not specialty:
         return _doctors(fee, params)

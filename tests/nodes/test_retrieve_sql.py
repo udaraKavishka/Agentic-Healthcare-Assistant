@@ -2,6 +2,8 @@ import pytest
 
 from assistant.nodes import retrieve_sql
 
+pytestmark = pytest.mark.usefixtures("hospital_db")
+
 
 async def test_a_question_no_query_matches_retrieves_nothing(
     monkeypatch: pytest.MonkeyPatch,

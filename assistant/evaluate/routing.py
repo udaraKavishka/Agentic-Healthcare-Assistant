@@ -8,6 +8,7 @@ import yaml
 from assistant.config import ROOT
 from assistant.nodes import faq
 from assistant.nodes.route import route
+from assistant.schemas import ChatMessage
 from assistant.state import Route
 
 QUESTIONS = ROOT / "evals" / "questions.yml"
@@ -19,10 +20,11 @@ async def score() -> float:
 
     confusion: Counter[tuple[str, str]] = Counter()
     misses: list[tuple[str, str, str]] = []
+    followups: list[tuple[dict, list[str]]] = []
     latencies: dict[str, list[float]] = defaultdict(list)
 
     for case in cases:
-        actual, seconds = await _decide(case["question"])
+        actual, seconds, rewritten = await _decide(case)
         expected = case["route"]
 
         confusion[(expected, actual)] += 1
@@ -31,30 +33,56 @@ async def score() -> float:
         if expected != actual:
             misses.append((case["question"], expected, actual))
 
+        if case.get("history"):
+            followups.append((case, _unresolved(case, rewritten)))
+
     correct = sum(
         count for (expected, actual), count in confusion.items() if expected == actual
     )
     _report(confusion, misses, correct, len(cases))
     _timings(latencies)
+    _memory(followups)
 
     return correct / len(cases)
 
 
-async def _decide(question: str) -> tuple[str, float]:
+async def _decide(case: dict) -> tuple[str, float, str]:
     """The decision the pipeline would make, and what it cost.
 
     The FAQ gate runs first here for the same reason it does in the pipeline:
     measuring the router on a question the router never sees would report a
     latency no patient experiences.
+
+    A case may carry the turns before it. Without them a follow-up like "what
+    does he charge?" is unroutable, so history is what makes multi-turn cases
+    measurable rather than a demonstration.
     """
+    question = case["question"]
     started = perf_counter()
 
     if faq.lookup(question) is not None:
-        return Route.FAQ.value, perf_counter() - started
+        return Route.FAQ.value, perf_counter() - started, question
 
-    decision = await route(question, history=[])
+    decision = await route(question, history=_history(case))
 
-    return decision.route.value, perf_counter() - started
+    return decision.route.value, perf_counter() - started, decision.question
+
+
+def _history(case: dict) -> list[ChatMessage]:
+    return [ChatMessage(**turn) for turn in case.get("history", [])]
+
+
+def _unresolved(case: dict, rewritten: str) -> list[str]:
+    """What the rewrite was supposed to pull out of the conversation and did not.
+
+    Routing a follow-up correctly is half of memory. The other half is that the
+    question standing on its own names what the pronoun referred to.
+    """
+    return [
+        wanted
+        for wanted in case.get("resolves", [])
+        if wanted.lower() not in rewritten.lower()
+    ]
 
 
 def _report(
@@ -95,3 +123,21 @@ def _timings(latencies: dict[str, list[float]]) -> None:
 
         median = statistics.median(seconds) * 1000
         print(f"  {chosen.value:8s} {len(seconds):2d} cases  {median:7.0f} ms")
+
+
+def _memory(followups: list[tuple[dict, list[str]]]) -> None:
+    """Whether a follow-up was understood, not merely routed."""
+    if not followups:
+        return
+
+    print("\n multi-turn: does the follow-up resolve against the conversation\n")
+
+    for case, missing in followups:
+        mark = "ok  " if not missing else "FAIL"
+        print(f"  {mark}  {case['question']}")
+
+        if missing:
+            print(f"          did not resolve: {missing}")
+
+    resolved = sum(1 for _, missing in followups if not missing)
+    print(f"\n follow-ups resolved: {resolved}/{len(followups)}")

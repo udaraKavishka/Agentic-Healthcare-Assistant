@@ -38,12 +38,17 @@ TOOLS = (
         description=(
             "Doctors, their speciality, qualifications and consultation fee."
             " Use for who practises what, and what a consultation costs."
-            " Omit both arguments to list every doctor."
+            " Pass a doctor's name to `name`, never to `specialty`."
+            " Omit every argument to list every doctor."
         ),
         parameters={
             "specialty": {
                 "type": ["string", "null"],
                 "description": "Speciality name or part of one, e.g. Cardio",
+            },
+            "name": {
+                "type": ["string", "null"],
+                "description": "A doctor's name, when the question asks about one",
             },
             "max_fee": {
                 "type": ["number", "null"],

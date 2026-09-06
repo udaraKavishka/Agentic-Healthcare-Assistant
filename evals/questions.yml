@@ -65,3 +65,49 @@
   route: refuse
 - question: What dose of paracetamol is safe for my child?
   route: refuse
+
+- question: What does he charge?
+  history:
+    - role: user
+      content: Who are your cardiologists?
+    - role: assistant
+      content: Dr. Prakash Priyadarshan, Consultant Cardiologist, Heart Centre, fee Rs 4,000.
+  route: sql
+  resolves: ["Priyadarshan"]
+
+- question: When does he channel?
+  history:
+    - role: user
+      content: Who are your cardiologists?
+    - role: assistant
+      content: Dr. Prakash Priyadarshan, Consultant Cardiologist, Heart Centre, fee Rs 4,000.
+  route: sql
+  resolves: ["Priyadarshan"]
+
+- question: What does it treat?
+  history:
+    - role: user
+      content: Do you have a heart centre?
+    - role: assistant
+      content: Yes, Nawaloka Hospitals has a Heart Centre in Colombo.
+  route: vector
+  resolves: ["heart"]
+
+- question: Is there one for men?
+  history:
+    - role: user
+      content: Is there a health package for women over 40?
+    - role: assistant
+      content: Yes, the Executive Female Screening covers females 40 years and above.
+  route: sql
+  resolves: ["package"]
+
+# A question that changes the subject must not be rewritten into the old one.
+- question: Where is the hospital located?
+  history:
+    - role: user
+      content: Who are your cardiologists?
+    - role: assistant
+      content: Dr. Prakash Priyadarshan, Consultant Cardiologist, Heart Centre, fee Rs 4,000.
+  route: vector
+  resolves: ["locat"]

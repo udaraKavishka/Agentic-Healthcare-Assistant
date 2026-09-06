@@ -189,3 +189,19 @@ def test_every_staffed_speciality_is_listed_once():
     assert len(names) == len(set(names))
     assert all(row["department"] for row in specialties)
     assert "Cardiology" in names
+
+
+def test_a_doctor_can_be_found_by_name():
+    """Without this the model puts the name in `specialty` and gets nothing.
+
+    "What does Dr Priyadarshan charge?" is a fee question about one person, and
+    the tool had no argument for it.
+    """
+    found = find_doctors(name="Dr Prakash Priyadarshan")
+
+    assert len(found) == 1
+    assert found[0]["consultation_fee"] == 4000
+
+
+def test_a_name_that_matches_nobody_finds_nobody():
+    assert find_doctors(name="Nobody Here") == []
