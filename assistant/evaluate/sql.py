@@ -65,6 +65,6 @@ def _rows(calls: list[tuple[str, dict]]) -> str:
         if tool is None:
             continue
 
-        found += tool.run(**arguments)
+        found += tool.run(**arguments) or retrieve_sql.instead(name, arguments)
 
     return "\n".join(str(value) for row in found for value in row.values()).lower()

@@ -32,12 +32,27 @@ async def retrieve(question: str) -> list[Passage]:
             logger.warning("Model asked for an unknown query: %s", name)
             continue
 
-        rows += _run(tool, arguments)
+        rows += _run(tool, arguments) or instead(name, arguments)
 
-    # No fallback query. Answering an unmatched question with the doctor list
-    # gives the answer model evidence that has nothing to do with the question,
-    # which is worse than the abstention an empty result produces.
+    # No fallback beyond that. Answering an unmatched question with the doctor
+    # list gives the answer model evidence with nothing to do with the
+    # question, which is worse than the abstention an empty result produces.
     return sql_templates.to_passages(rows, CITATION)
+
+
+def instead(name: str, arguments: dict) -> list[dict[str, Any]]:
+    """What the hospital does staff, when the speciality asked for is absent.
+
+    Asked for an eye surgeon, the database has nothing and the honest reply is
+    that we do not list one. On its own that leaves the patient where they
+    started, and the next question is always "then what do you have". The
+    answer is one query away, so it travels with the abstention rather than
+    after it.
+    """
+    if name != sql_templates.find_doctors.__name__ or not arguments.get("specialty"):
+        return []
+
+    return sql_templates.list_specialties()
 
 
 async def chosen(question: str) -> list[tuple[str, dict]]:

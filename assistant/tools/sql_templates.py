@@ -12,33 +12,88 @@ WORD = re.compile(r"[a-z]+", re.IGNORECASE)
 # here rather than by a model remembering them.
 
 
+STEM = 6
+
+DOCTORS = """
+    SELECT d.name, d.qualifications, d.consultation_fee,
+           s.name AS specialty, s.department
+    FROM doctors d
+    JOIN specialties s ON s.id = d.specialty_id
+    {where}
+    ORDER BY d.consultation_fee
+"""
+
+
 def find_doctors(
     specialty: str | None = None, max_fee: float | None = None
 ) -> list[dict[str, Any]]:
-    clauses = []
-    params: dict[str, Any] = {}
+    """Doctors, narrowed by speciality or by fee.
 
-    if specialty:
-        clauses.append("s.name LIKE :specialty")
-        params["specialty"] = f"%{specialty}%"
+    The speciality is matched whole first and by stem only if that found
+    nothing, so an exact request keeps its precision and an inflected one still
+    lands.
+    """
+    fee, params = _fee_clause(max_fee)
 
-    if max_fee is not None:
-        clauses.append("d.consultation_fee <= :max_fee")
-        params["max_fee"] = max_fee
+    if not specialty:
+        return _doctors(fee, params)
 
+    whole = _doctors(
+        fee + ["s.name LIKE :specialty"], params | {"specialty": f"%{specialty}%"}
+    )
+
+    return whole or _doctors(*_stemmed(specialty, fee, params))
+
+
+def list_specialties() -> list[dict[str, Any]]:
+    """Every speciality the hospital staffs, for when the asked-for one is absent.
+
+    "We do not have that" is a poor answer on its own when the next question is
+    always "then what do you have".
+    """
+    return fetch(
+        """
+        SELECT DISTINCT s.name AS specialty, s.department
+        FROM specialties s
+        JOIN doctors d ON d.specialty_id = s.id
+        ORDER BY s.name
+        """
+    )
+
+
+def _doctors(clauses: list[str], params: dict[str, Any]) -> list[dict[str, Any]]:
     where = f"WHERE {' AND '.join(clauses)}" if clauses else ""
 
-    return fetch(
-        f"""
-        SELECT d.name, d.qualifications, d.consultation_fee,
-               s.name AS specialty, s.department
-        FROM doctors d
-        JOIN specialties s ON s.id = d.specialty_id
-        {where}
-        ORDER BY d.consultation_fee
-        """,
-        params,
-    )
+    return fetch(DOCTORS.format(where=where), params)
+
+
+def _fee_clause(max_fee: float | None) -> tuple[list[str], dict[str, Any]]:
+    if max_fee is None:
+        return [], {}
+
+    return ["d.consultation_fee <= :max_fee"], {"max_fee": max_fee}
+
+
+def _stemmed(
+    specialty: str, fee: list[str], params: dict[str, Any]
+) -> tuple[list[str], dict[str, Any]]:
+    """Match the root of each word against the speciality or its department."""
+    stems = {
+        word[:STEM].lower() for word in WORD.findall(specialty) if len(word) >= STEM
+    }
+
+    if not stems:
+        return fee + ["1 = 0"], params
+
+    clauses = []
+    stemmed = dict(params)
+
+    for index, stem in enumerate(sorted(stems)):
+        key = f"stem{index}"
+        stemmed[key] = f"%{stem}%"
+        clauses.append(f"(s.name LIKE :{key} OR s.department LIKE :{key})")
+
+    return fee + clauses, stemmed
 
 
 def get_schedule(doctor_name: str = "", day: str = "") -> list[dict[str, Any]]:

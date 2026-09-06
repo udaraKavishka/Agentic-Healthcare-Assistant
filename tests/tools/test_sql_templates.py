@@ -6,6 +6,7 @@ from assistant.tools.sql_templates import (
     find_health_packages,
     find_lab_tests,
     get_schedule,
+    list_specialties,
 )
 
 pytestmark = pytest.mark.usefixtures("hospital_db")
@@ -150,3 +151,41 @@ def test_a_query_widens_rather_than_coming_back_empty():
 
 def test_widening_does_not_invent_a_match():
     assert find_lab_tests("helicopter maintenance") == []
+
+
+def test_a_speciality_is_found_by_the_word_the_patient_uses():
+    """The column says Cardiology; the patient says cardiologist.
+
+    Leaving this to the model meant the answer depended on whether it happened
+    to normalise the word, so the most obvious question in the system was a
+    coin flip.
+    """
+    for asked, expected in [
+        ("cardiologist", "Cardiology"),
+        ("neurosurgeon", "Neurosurgery"),
+        ("paediatrician", "Paediatrics"),
+        ("radiologist", "Radiology"),
+    ]:
+        found = find_doctors(asked)
+
+        assert found, asked
+        assert expected in found[0]["specialty"]
+
+
+def test_an_exact_speciality_keeps_its_precision():
+    """The stem pass is a fallback, not a widening: it runs only on no rows."""
+    assert all("Cardiology" == row["specialty"] for row in find_doctors("Cardiology"))
+
+
+def test_a_speciality_the_hospital_does_not_staff_finds_nothing():
+    """Matching more loosely must not start inventing consultants."""
+    assert find_doctors("ophthalmologist") == []
+
+
+def test_every_staffed_speciality_is_listed_once():
+    specialties = list_specialties()
+    names = [row["specialty"] for row in specialties]
+
+    assert len(names) == len(set(names))
+    assert all(row["department"] for row in specialties)
+    assert "Cardiology" in names

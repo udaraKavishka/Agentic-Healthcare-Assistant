@@ -70,3 +70,8 @@
 - question: What health packages do you have for young adults?
   tool: find_health_packages
   expect: ["18-30"]
+
+- question: Are there any eye surgeons?
+  tool: find_doctors
+  expect: ["Cardiology", "ENT Surgery"]
+  absent: ["Ophthalmology"]
