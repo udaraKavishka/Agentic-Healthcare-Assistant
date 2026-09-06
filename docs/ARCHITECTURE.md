@@ -105,7 +105,7 @@ conflict with the database on exactly the questions routing sends to SQL, and th
 
 Qdrant fuses sparse and dense retrieval server-side in one Query API call, so
 hybrid search costs one request rather than a hand-rolled BM25 index plus fusion
-code. 
+code.
 
 **Rejected:** Chroma, weaker hybrid support; FAISS, a library rather than a
 store; hosted stores, which put a network hop in front of an offline reviewer.
@@ -308,4 +308,3 @@ query filters on the wrong argument.
 | `docs/DIAGRAMS.md`, `docs/diagrams/` | Seven views of the system. | Architectural decisions |
 | `Makefile` | One command surface, so a reviewer never assembles a command. | Deliverable |
 | The committed corpus | 82 documents, so nobody re-crawls a hospital's site. | Deliverable |
-
