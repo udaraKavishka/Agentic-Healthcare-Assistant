@@ -92,13 +92,13 @@ ways in [`docs/diagrams`](docs/diagrams).
 
 | | |
 |---|---|
-| Routing accuracy | **29/29** |
-| Retrieval hit rate | **21/22** in the top 5, mean reciprocal rank 0.93 |
+| Routing accuracy | **34/34**, including 5 multi-turn |
+| Retrieval hit rate | **22/22** in the top 5, mean reciprocal rank 0.94 |
 | SQL execution accuracy | **17/17**, checked against the rows, not the route |
-| FAQ fast path | 51 ms median, no model call |
+| FAQ fast path | 56 ms median, no model call |
 | Corpus | 82 documents, 834 chunks, from 89 URLs |
 | Database | 10 specialities, 11 doctors, 15 sessions, 17 lab tests, 11 packages |
-| Tests | 122, with `ruff`, `ruff format` and `pyright` clean |
+| Tests | 129, with `ruff`, `ruff format` and `pyright` clean |
 
 The three scores come from one `make evaluate` run.
 
