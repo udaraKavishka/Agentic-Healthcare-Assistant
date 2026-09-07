@@ -23,6 +23,8 @@ hospital records in a relational database, or both.
 | `web/` | Chat UI | Streamlit |
 | `configs/prompts.yml` | Every word given to a model or shown to a patient | |
 
+![Runtime view: processes, stores and the models each stage calls](diagrams/Runtime.png)
+
 ### One turn
 
 ```
@@ -46,6 +48,8 @@ answer             gpt-oss-120b, streamed, grounded in what was retrieved
 remember           the turn and its route, in conversations.db
 ```
 
+![Request path: one turn from question to streamed answer](diagrams/Request%20path.png)
+
 ### What the build produces
 
 | Command | Reads | Writes |
@@ -53,6 +57,8 @@ remember           the turn and its route, in conversations.db
 | `make scrape` | `www.nawaloka.com`, 89 URLs | `knowledge/scraped/`, 82 documents |
 | `make index` | that corpus | Qdrant, 834 chunks; 89 harvested FAQ entries |
 | `make seed` | `knowledge/data.sql` | `knowledge/hospital.db`, 5 tables, 64 rows |
+
+![What the three offline commands build](diagrams/Offline%20Summary.png)
 
 No model is called during the build.
 
@@ -148,6 +154,7 @@ stem, because the column says `Cardiology` and the patient says cardiologist.
 | 3 | `mode=ro` plus `PRAGMA query_only` | Any write, even past walls 1 and 2 |
 | 4 | Progress-handler deadline | A runaway query |
 
+![SQL tool chain: the four walls between a question and the database](diagrams/SQL%20Tool%20chain.png)
 
 ## 7. Seeding and indexing
 
@@ -159,6 +166,8 @@ Indexing walks the corpus once and feeds both the vector store and the harvested
 FAQ. It is incremental: each point id is a `uuid5` over the model name, URL and
 contextualised text, so unchanged chunks are never re-embedded and a model switch
 invalidates everything at once.
+
+![Offline ingestion: scrape, chunk, embed, index, seed](diagrams/Offline%20Ingestion.png)
 
 ## 8. The agentic pipeline
 
@@ -191,6 +200,8 @@ descriptions, because that is what the model reads when choosing.
 **The trap this avoids:** two SQL columns hold prose, so "which package includes
 a Pap smear?" reads unstructured and a surface-texture router sends it to the
 vector store, where the answer does not exist. Route by where the truth lives.
+
+![Routing decision: how a question is assigned one of five routes](diagrams/Routing%20Decision.png)
 
 **Measured: 34 of 34**, as a confusion matrix, because failures are directional.
 
@@ -289,7 +300,9 @@ identity to attach memory to.
 | Routing | 34 of 34, including 5 multi-turn |
 | Retrieval | 22 of 22 in the top five, MRR 0.94 |
 | SQL execution | 17 of 17, checked against the rows |
-| FAQ fast path | 55 ms median, no model call |
+| FAQ fast path | 56 ms median, no model call |
+
+![Evaluation: three scores from one run](diagrams/Evaluation.png)
 
 One `make evaluate` run produces all three. They fail independently: routing can
 be right while retrieval returns the wrong page, and both can be right while a
